@@ -1,8 +1,7 @@
 import discord
+from fastapi import FastAPI
+from src.routes import helpr
 
-def main():
-    print("Hello from thbot!")
+app = FastAPI()
 
-
-if __name__ == "__main__":
-    main()
+app.include_router(helpr.router)
