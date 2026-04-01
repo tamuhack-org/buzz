@@ -6,7 +6,8 @@ router = APIRouter(
     tags=["helpr"],
 )
 
-@router.get("/test")
-async def test( request: Request, service: HelprDep, ):
-    return await service.test()
+#TODO: Need to add some kinda authentication
+@router.get("/ping-mentor")
+async def ping_mentor( request: Request, service: HelprDep, ):
+    return await service.ping_mentor()
 
