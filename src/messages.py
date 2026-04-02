@@ -9,6 +9,7 @@ class TicketMessages:
         There's a new ticket from **{ticket_details.name}**!
         They want to know: 
         ```{ticket_details.issue}``` 
-        They're located at: **{ticket_details.location}** and their phone number is **{ticket_details.phone_number}**."""
+        They're located **{ticket_details.location}** 
+        You can reach them at **{ticket_details.phone_number}** or **{ticket_details.email}**."""
 
         return inspect.cleandoc(message) #remove leading whitespaces
