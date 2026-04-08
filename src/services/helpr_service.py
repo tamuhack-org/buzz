@@ -1,4 +1,4 @@
-from discord import TextChannel
+import discord
 from src.utils.bot import client
 from src.exceptions.custom_exceptions import ChannelNotFound, InvalidChannelType
 from src.schemas import TicketDetails
@@ -11,7 +11,7 @@ class HelprService():
         if not channel:
             raise ChannelNotFound(str(settings.MENTOR_CHANNEL_ID))
 
-        if not isinstance(channel, (TextChannel)):
+        if not isinstance(channel, (discord.TextChannel)):
             raise InvalidChannelType("text channel", str(settings.MENTOR_CHANNEL_ID))
 
         mentor_ping = f"<@&{settings.MENTOR_ROLE_ID}>"
