@@ -2,7 +2,8 @@ import discord
 
 class TicketButtons(discord.ui.View):
     def __init__(self, ticket_details):
-        super().__init__(timeout=None)
+        timeout = 172800 #timeout in 2 days
+        super().__init__(timeout=timeout)
         self.ticket_details = ticket_details
         self.add_item(discord.ui.Button(
             label="View Ticket",
