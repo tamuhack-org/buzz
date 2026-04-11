@@ -5,6 +5,7 @@ class TicketButtons(discord.ui.View):
         timeout = 172800 #timeout in 2 days
         super().__init__(timeout=timeout)
         self.ticket_details = ticket_details
+
         self.add_item(discord.ui.Button(
             label="View Ticket",
             url="https://helpr.tamuhack.org/mentor",
