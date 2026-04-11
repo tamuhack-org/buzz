@@ -13,6 +13,9 @@ async def get_helpr_service() -> HelprService:
     return HelprService()
 
 async def verify_hmac(request: Request):
+    if settings.ENV == "development":
+        return
+
     request_hmac = request.headers.get('X-Authorization-Content-HMAC')
     request_timestamp = request.headers.get('X-Authorization-Timestamp')
 
