@@ -2,6 +2,7 @@ import httpx
 import discord
 from src.schemas import TicketDetails
 from src.utils.config import settings
+from src.utils.crypto import create_hmac
 
 class TicketButtons(discord.ui.View):
     def __init__(self, ticket_details: TicketDetails):
@@ -20,10 +21,11 @@ class TicketButtons(discord.ui.View):
         ticketId = self.ticket_details.ticketId
         url = f"{settings.HELPR_URL}/api/tickets/claim"
         payload = { "discordId": userId, "ticketId": ticketId }
+        headers = create_hmac(payload)
 
         #TODO: handle not linked
         async with httpx.AsyncClient() as client:
-            await client.post(url, json=payload)
+            await client.post(url, json=payload, headers=headers)
 
         #TODO: update buttons
         #await interaction.response.edit_message(view=self)
