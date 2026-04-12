@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     MENTOR_CHANNEL_ID: int #discord.py expects channel ID to be int
     MENTOR_ROLE_ID: int
     HMAC_SECRET: str
+    HELPR_URL: str
 
     model_config = SettingsConfigDict(env_file=".env")
 
