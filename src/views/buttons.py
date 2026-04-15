@@ -48,7 +48,6 @@ class TicketButtons(discord.ui.View):
         payload = { "discordId": userId, "ticketId": ticketId }
         headers = create_hmac(payload)
 
-        #TODO: handle not linked
         async with httpx.AsyncClient() as client:
             response = await client.post(url, json=payload, headers=headers)
             data = response.json()
