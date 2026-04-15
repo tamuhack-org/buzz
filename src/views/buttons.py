@@ -18,6 +18,24 @@ class TicketButtons(discord.ui.View):
             url=f"{settings.HELPR_URL}/mentor",
         ))
 
+    async def edit_interaction(self, interaction: discord.Interaction, *, edited_msg: str, embed_color: discord.Color | None = None, embed_footer: str = ""):
+        if not interaction.message:
+            #if for some reason embed is missing
+            return
+
+        embed = interaction.message.embeds[0]
+        #set the optional edits
+        if embed_color:
+            embed.color = embed_color
+        if embed_footer:
+            embed.set_footer(text=embed_footer)
+
+        #edits actual message
+        await interaction.edit_original_response(content=edited_msg)
+        #edits embed
+        await interaction.message.edit(embed=embed, view=self)
+        return
+
     @discord.ui.button(label="Claim Ticket", style=discord.ButtonStyle.blurple)
     async def claim(self, interaction: discord.Interaction, button: discord.ui.Button):
         userId = str(interaction.user.id)
@@ -50,31 +68,14 @@ class TicketButtons(discord.ui.View):
                 #generic failure message
                 #TODO might not want to be a global edit?
                 button.disabled = True
-                if not interaction.message:
-                    #if for some reason embed is missing
-                    return
-
-                embed = interaction.message.embeds[0]
-                embed.color = discord.Color.red()
-                await interaction.edit_original_response(content=f"Something went wrong. Please claim directly from [helpr]({settings.HELPR_URL})!")
-                await interaction.message.edit(embed=embed, view=self)
+                await self.edit_interaction(interaction, edited_msg=f"Something went wrong. Please claim directly from [helpr]({settings.HELPR_URL})!", embed_color=discord.Color.red())
                 return
 
             #TODO add button to unclaim/resolve (only for claimed user)
+            #TODO BUG if claim fails because user already has a claimed ticket, buzz still shows success (might be bug in helpr tbh) 
             #success: mark as claimed and change embed of message
             button.label = "Claimed"
             button.style = discord.ButtonStyle.success
             button.disabled = True
+            await self.edit_interaction(interaction, edited_msg="Ticket claimed!", embed_color=discord.Color.green(), embed_footer=f"Claimed by {interaction.user.display_name}")
 
-            if not interaction.message:
-                #if for some reason embed is missing
-                return
-
-            embed = interaction.message.embeds[0]
-            embed.set_footer(text=f"Claimed by {interaction.user.display_name}")
-            embed.color = discord.Color.green()
-
-        #edits actual message
-        await interaction.edit_original_response(content="Ticket claimed!", view=None)
-        #edits embed
-        await interaction.message.edit(embed=embed, view=self)
