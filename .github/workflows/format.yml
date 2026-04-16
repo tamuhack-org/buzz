@@ -1,0 +1,20 @@
+name: Code Quality Checks
+
+on: [push]
+
+jobs:
+  ruff:
+    name: 'Check code quality and health with ruff'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install and run Ruff
+        uses: astral-sh/ruff-action@v3
+
+      - name: Run Ruff Linter
+        run: ruff check
+
+      - name: Run Ruff Formatter
+        run: ruff format
