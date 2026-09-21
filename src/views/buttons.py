@@ -1,6 +1,8 @@
 import logging
-import httpx
+
 import discord
+import httpx
+
 from src.schemas import TicketDetails
 from src.utils.config import settings
 from src.utils.crypto import create_hmac

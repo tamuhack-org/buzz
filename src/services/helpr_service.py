@@ -1,15 +1,17 @@
-import discord
 import logging
-from src.utils.bot import client
+
+import discord
+
 from src.exceptions.custom_exceptions import ChannelNotFound, InvalidChannelType
 from src.schemas import TicketDetails
-from src.views.embeds import TicketEmbeds
-from src.views.buttons import TicketButtons
+from src.utils.bot import client
 from src.utils.config import settings
+from src.views.buttons import TicketButtons
+from src.views.embeds import TicketEmbeds
 
 logger = logging.getLogger(__name__)
 
-class HelprService():
+class HelprService:
     async def ping_mentor(self, ticket_details: TicketDetails):
         logger.info("Attemping to ping mentors")
         channel = client.get_channel(settings.MENTOR_CHANNEL_ID)

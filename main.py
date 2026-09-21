@@ -1,12 +1,12 @@
-from fastapi import FastAPI
 import asyncio
 import logging
 from contextlib import asynccontextmanager
 
-from src.utils.bot import client
-from src.utils.config import settings
+from fastapi import FastAPI
 
 from src.routes import helpr
+from src.utils.bot import client
+from src.utils.config import settings
 
 LOG_LEVEL = settings.LOG_LEVEL.upper()
 logging.basicConfig(

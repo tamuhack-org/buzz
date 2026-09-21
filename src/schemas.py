@@ -1,5 +1,7 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+
 from pydantic import BaseModel
+
 
 class TicketDetails(BaseModel):
     name: str
@@ -11,5 +13,5 @@ class TicketDetails(BaseModel):
     phone_number: str 
     issue: str
     ticketId: str
-    _created_at: datetime = datetime.now(timezone.utc)
+    _created_at: datetime = datetime.now(UTC)
 

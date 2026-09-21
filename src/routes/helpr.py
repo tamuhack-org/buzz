@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
+
 from src.deps import Helpr
-from src.utils.crypto import verify_hmac
 from src.schemas import TicketDetails
+from src.utils.crypto import verify_hmac
 
 router = APIRouter(
     prefix="/helpr",

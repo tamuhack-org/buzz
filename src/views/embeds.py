@@ -1,5 +1,7 @@
 import discord
+
 from src.schemas import TicketDetails
+
 
 class TicketEmbeds:
     @staticmethod

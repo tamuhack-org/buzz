@@ -1,8 +1,9 @@
 import hashlib
-import json
 import hmac
-import time
+import json
 import logging
+import time
+
 from fastapi import Request
 
 from src.exceptions.custom_exceptions import Unauthorized
@@ -30,7 +31,7 @@ async def verify_hmac(request: Request):
 
     request_body_raw = await request.body()
     request_body = request_body_raw.decode("utf-8")
-    msg = f"{request_timestamp}{request_body}".encode("utf-8")
+    msg = f"{request_timestamp}{request_body}".encode()
 
     new_hmac = hmac.new(
         key=settings.HMAC_SECRET.encode("utf-8"), msg=msg, digestmod=hashlib.sha256
@@ -46,7 +47,7 @@ def create_hmac(data: dict):
     #TODO: look into if keys should be sorted?
     json_payload = json.dumps(data, separators=(',', ':'))
     hmac_timestamp = time.time()
-    msg = f"{hmac_timestamp}{json_payload}".encode("utf-8")
+    msg = f"{hmac_timestamp}{json_payload}".encode()
 
     hmac_signature = hmac.new(
         key=settings.HMAC_SECRET.encode("utf-8"), msg=msg, digestmod=hashlib.sha256
