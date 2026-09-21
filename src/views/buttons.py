@@ -79,7 +79,7 @@ class TicketButtons(discord.ui.View):
 
             elif response.status_code != 200:
                 # generic failure message
-                # TODO might not want to be a global edit?
+                # TODO: might not want to be a global edit?
                 button.disabled = True
                 await self.edit_interaction(
                     interaction,
@@ -88,8 +88,8 @@ class TicketButtons(discord.ui.View):
                 )
                 return
 
-            # TODO add button to unclaim/resolve (only for claimed user)
-            # TODO BUG if claim fails because user already has a claimed ticket, buzz still shows success (might be bug in helpr tbh)
+            # TODO: add button to unclaim/resolve (only for claimed user)
+            # TODO: BUG if claim fails because user already has a claimed ticket, buzz still shows success (might be bug in helpr tbh)
             # success: mark as claimed and change embed of message
             button.label = "Claimed"
             button.style = discord.ButtonStyle.success
@@ -98,5 +98,6 @@ class TicketButtons(discord.ui.View):
                 interaction,
                 edited_msg="Ticket claimed!",
                 embed_color=discord.Color.green(),
+                # TODO: maybe make this could show real name from helpr instead of discord username?
                 embed_footer=f"Claimed by {interaction.user.display_name}",
             )
