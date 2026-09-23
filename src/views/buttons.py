@@ -52,7 +52,7 @@ class TicketButtons(discord.ui.View):
     async def claim(self, interaction: discord.Interaction, button: discord.ui.Button):
         userId = str(interaction.user.id)
         ticketId = self.ticket_details.ticketId
-        logger.debug(f"Attemping to claim ticket: {ticketId} for user: {userId}")
+        logger.info(f"Attemping to claim ticket: {ticketId} for user: {userId}")
 
         await interaction.response.defer(
             ephemeral=True
@@ -88,6 +88,7 @@ class TicketButtons(discord.ui.View):
 
             elif response.status_code != 200:
                 # generic failure message
+                logger.info(f"Claim ticket failed: {response.text}")
                 # TODO: might not want to be a global edit?
                 button.disabled = True
                 await self.edit_interaction(
