@@ -106,7 +106,7 @@ class TicketButtons(discord.ui.View):
             button.disabled = True
             await self.edit_interaction(
                 interaction,
-                edited_msg="Ticket claimed!",
+                edited_msg=f"Ticket claimed by {interaction.user.mention}!",
                 embed_color=discord.Color.green(),
                 # TODO: maybe make this could show real name from helpr instead of discord username?
                 embed_footer=f"Claimed by {interaction.user.display_name}",
