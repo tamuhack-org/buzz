@@ -77,6 +77,15 @@ class TicketButtons(discord.ui.View):
                 )
                 return
 
+            elif data.get("code") == "HAS_EXISTING_TICKET":
+                link_url = f"{settings.HELPR_URL}/mentor"
+                await interaction.followup.send(
+                    content="You already have an active ticket. Before claiming another, either mark it as finished or unclaim it.\n"
+                    f"[Manage your ticket here]({link_url})",
+                    ephemeral=True,
+                )
+                return
+
             elif response.status_code != 200:
                 # generic failure message
                 # TODO: might not want to be a global edit?
