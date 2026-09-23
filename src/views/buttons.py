@@ -87,6 +87,7 @@ class TicketButtons(discord.ui.View):
                 return
 
             elif response.status_code != 200:
+                #TODO: Think about if we have to worry about race conditions?
                 # generic failure message
                 logger.info(f"Claim ticket failed: {response.text}")
                 # TODO: might not want to be a global edit?
@@ -99,7 +100,6 @@ class TicketButtons(discord.ui.View):
                 return
 
             # TODO: add button to unclaim/resolve (only for claimed user)
-            # TODO: BUG if claim fails because user already has a claimed ticket, buzz still shows success (might be bug in helpr tbh)
             # success: mark as claimed and change embed of message
             button.label = "Claimed"
             button.style = discord.ButtonStyle.success
