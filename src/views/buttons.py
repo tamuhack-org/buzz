@@ -42,10 +42,8 @@ class TicketButtons(discord.ui.View):
         if embed_footer:
             embed.set_footer(text=embed_footer)
 
-        # edits actual message
-        await interaction.edit_original_response(content=edited_msg)
-        # edits embed
-        await interaction.message.edit(embed=embed, view=self)
+        #update message and embed
+        await interaction.message.edit(content=edited_msg, embed=embed, view=self)
         return
 
     @discord.ui.button(label="Claim Ticket", style=discord.ButtonStyle.blurple)
