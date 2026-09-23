@@ -44,7 +44,7 @@ async def verify_hmac(request: Request):
 
 
 def create_hmac(data: dict):
-    #TODO: look into if keys should be sorted?
+    # TODO: look into if keys should be sorted?
     json_payload = json.dumps(data, separators=(',', ':'))
     hmac_timestamp = time.time()
     msg = f"{hmac_timestamp}{json_payload}".encode()

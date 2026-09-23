@@ -1,4 +1,4 @@
-#TODO: State is very unidirectional. It only goes buzz -> helpr. If changes happen on helpr, buzz should be able to pick up on that.
+# TODO: State is very unidirectional. It only goes buzz -> helpr. If changes happen on helpr, buzz should be able to pick up on that.
 
 import asyncio
 import logging

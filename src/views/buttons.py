@@ -85,7 +85,7 @@ class TicketButtons(discord.ui.View):
                 return
 
             elif response.status_code != 200:
-                #TODO: Think about if we have to worry about race conditions?
+                # TODO: Think about if we have to worry about race conditions?
                 # generic failure message
                 logger.info(f"Claim ticket failed: {response.text}")
                 # TODO: might not want to be a global edit?
