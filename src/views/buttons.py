@@ -89,6 +89,7 @@ class TicketButtons(discord.ui.View):
                     content ="This ticket has already been claimed",
                     ephemeral=True,
                 )
+                return
 
 
             elif response.status_code != 200:
