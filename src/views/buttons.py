@@ -84,6 +84,13 @@ class TicketButtons(discord.ui.View):
                 )
                 return
 
+            elif data.get("code") == "TICKET_ALREADY_CLAIMED":
+                await interaction.followup.send(
+                    content ="This ticket has already been claimed",
+                    ephemeral=True,
+                )
+
+
             elif response.status_code != 200:
                 # TODO: Think about if we have to worry about race conditions?
                 # generic failure message

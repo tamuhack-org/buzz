@@ -1,0 +1,5 @@
+discord-py>=2.7.1
+fastapi[standard]>=0.135.2
+pydantic-settings>=2.13.1
+python-dotenv>=1.2.2
+ruff>=0.15.8
