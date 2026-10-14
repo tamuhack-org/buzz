@@ -27,7 +27,12 @@ class HelprService:
         embed = TicketEmbeds.ticket_created(ticket_details)
         view = TicketButtons(ticket_details)
 
-        await channel.send(content=mentor_ping, embed=embed, view=view)
+        message = await channel.send(content=mentor_ping, embed=embed, view=view)
+        message_info = {
+            "channel_id": message.channel.id,
+            "message_id": message.id
+        }
+
         logger.info("Mentors pinged!")
 
-        return { "status_code": 200, "message": "Message sent to mentors!" }
+        return { "status_code": 200, "message": "Message sent to mentors!", "messageInfo": message_info }
