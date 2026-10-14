@@ -49,7 +49,7 @@ class TicketButtons(discord.ui.View):
     @discord.ui.button(label="Claim Ticket", style=discord.ButtonStyle.blurple)
     async def claim(self, interaction: discord.Interaction, button: discord.ui.Button):
         userId = str(interaction.user.id)
-        ticketId = self.ticket_details.ticketId
+        ticketId = self.ticket_details.ticket_id
         logger.info(f"Attemping to claim ticket: {ticketId} for user: {userId}")
 
         await interaction.response.defer(

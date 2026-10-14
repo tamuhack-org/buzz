@@ -13,7 +13,7 @@ class TicketEmbeds:
             timestamp=ticket_details._created_at
         )
 
-        embed.add_field(name="👩🏻‍💻 Hacker", value=ticket_details.name, inline=True)
+        embed.add_field(name="👩🏻‍💻 Hacker", value=ticket_details.author.name, inline=True)
         embed.add_field(name="📍 Location", value=f"`{ticket_details.location}`", inline=True)
         embed.add_field(name="📞 Contact", value=ticket_details.phone_number, inline=False)
 
