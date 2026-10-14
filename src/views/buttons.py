@@ -91,7 +91,6 @@ class TicketButtons(discord.ui.View):
                 )
                 return
 
-
             elif response.status_code != 200:
                 # TODO: Think about if we have to worry about race conditions?
                 # generic failure message
@@ -110,10 +109,11 @@ class TicketButtons(discord.ui.View):
             button.label = "Claimed"
             button.style = discord.ButtonStyle.success
             button.disabled = True
+
+            claimant_name = data.get("claimant").get("name")
             await self.edit_interaction(
                 interaction,
                 edited_msg=f"Ticket claimed by {interaction.user.mention}!",
                 embed_color=discord.Color.green(),
-                # TODO: maybe make this could show real name from helpr instead of discord username?
-                embed_footer=f"Claimed by {interaction.user.display_name}",
+                embed_footer=f"Claimed by {claimant_name}",
             )
