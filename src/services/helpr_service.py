@@ -29,10 +29,10 @@ class HelprService:
 
         message = await channel.send(content=mentor_ping, embed=embed, view=view)
         message_info = {
-            "channel_id": message.channel.id,
-            "message_id": message.id
+            "channel_id": str(message.channel.id),
+            "message_id": str(message.id)
         }
 
         logger.info("Mentors pinged!")
 
-        return { "status_code": 200, "message": "Message sent to mentors!", "messageInfo": message_info }
+        return { "status_code": 200, "message": "Message sent to mentors!", "message_info": message_info }
