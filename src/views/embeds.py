@@ -44,7 +44,7 @@ class TicketEmbeds:
 
         return TicketEmbeds.generic_ticket(
             ticket_details,
-            discord.Color.gold(),
+            discord.Color.dark_teal(),
             f"Claimed by {ticket_details.claimant.name}",
         )
 
