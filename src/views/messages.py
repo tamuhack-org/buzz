@@ -1,5 +1,5 @@
-from exceptions.custom_exceptions import BadRequest
-from schemas import TicketDetails
+from src.exceptions.custom_exceptions import BadRequest
+from src.schemas import TicketDetails
 from src.utils.config import settings
 
 
