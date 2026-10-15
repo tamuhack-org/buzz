@@ -20,3 +20,17 @@ class TicketEmbeds:
         embed.set_footer(text="Helpr")
 
         return embed
+
+    @staticmethod
+    def ticket_claimed(ticket_details: TicketDetails):
+        #return the embeds
+        return
+
+    @staticmethod
+    def ticket_resolved(ticket_details: TicketDetails):
+        return
+
+    #generic catch all error
+    @staticmethod
+    def ticket_error(ticket_details: TicketDetails):
+        return
