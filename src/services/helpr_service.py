@@ -61,3 +61,19 @@ class HelprService:
             "message": "Message sent to mentors!",
             "message_info": message_info,
         }
+
+    async def update_ticket(self, ticket_details: TicketUpdate):
+        if ticket_details.resolved:
+            # edit message to be resolved
+            pass
+        elif ticket_details.claimant and ticket_details.claimant.user_id is not None:
+            # mark claimed
+            pass
+        elif not ticket_details.claimant:
+            # mark unclaimed
+            pass
+        else:
+            # mark error
+            pass
+
+        pass
