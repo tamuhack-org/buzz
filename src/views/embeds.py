@@ -14,7 +14,7 @@ class TicketEmbeds:
             title="New Ticket!",
             description=f"**Issue:** {ticket_details.issue}",
             color=color,
-            timestamp=ticket_details._created_at,
+            timestamp=ticket_details.created_at,
         )
 
         embed.add_field(
