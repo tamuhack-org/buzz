@@ -14,7 +14,7 @@ class TicketMessages:
             raise BadRequest("Ticket does not have a claimant")
 
         if ticket_details.claimant.discord_id is not None:
-            return f"Ticket claimed by <@&{ticket_details.claimant.discord_id}"
+            return f"Ticket claimed by <@{ticket_details.claimant.discord_id}>"
 
         # just use name as fallback
         return f"Ticket claimed by {ticket_details.claimant.name}"
@@ -28,7 +28,7 @@ class TicketMessages:
             raise BadRequest("Ticket does not have a claimant")
 
         if ticket_details.claimant.discord_id is not None:
-            return f"Ticket resolved by <@&{ticket_details.claimant.discord_id}"
+            return f"Ticket resolved by <@{ticket_details.claimant.discord_id}>"
 
         # just use name as fallback
         return f"Ticket resolved by {ticket_details.claimant.name}"
