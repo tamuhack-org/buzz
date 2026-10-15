@@ -3,13 +3,15 @@ import logging
 import discord
 import httpx
 
-from src.schemas import TicketDetails
+from src.schemas import TicketDetails, TicketUpdate
 from src.utils.config import settings
 from src.utils.crypto import create_hmac
+from src.utils.followups import generic_error_followup
 
 logger = logging.getLogger(__name__)
 
 
+#TODO: Fix literally everything to do with buttons
 class TicketButtons(discord.ui.View):
     def __init__(self, ticket_details: TicketDetails):
         timeout = 172800  # timeout in 2 days
@@ -23,95 +25,19 @@ class TicketButtons(discord.ui.View):
             )
         )
 
-    async def edit_interaction(
-        self,
-        interaction: discord.Interaction,
-        *,
-        edited_msg: str,
-        embed_color: discord.Color | None = None,
-        embed_footer: str = "",
-    ):
-        if not interaction.message:
-            # if for some reason embed is missing
-            return
-
-        embed = interaction.message.embeds[0]
-        # set the optional edits
-        if embed_color:
-            embed.color = embed_color
-        if embed_footer:
-            embed.set_footer(text=embed_footer)
-
-        #update message and embed
-        await interaction.message.edit(content=edited_msg, embed=embed, view=self)
-        return
-
     @discord.ui.button(label="Claim Ticket", style=discord.ButtonStyle.blurple)
     async def claim(self, interaction: discord.Interaction, button: discord.ui.Button):
-        userId = str(interaction.user.id)
-        ticketId = self.ticket_details.ticket_id
-        logger.info(f"Attemping to claim ticket: {ticketId} for user: {userId}")
+        from src.views.update_ticket import UpdateTicket
 
-        await interaction.response.defer(
-            ephemeral=True
-        )  # let discord know this might take a while and not timeout
+        # TODO: add button to unclaim/resolve (only for claimed user)
+        if interaction.message is None:
+            await generic_error_followup(interaction)
+            return
+        
+        ticket_update = TicketUpdate(
+            **self.ticket_details.model_dump(),
+            channel_id = str(interaction.message.channel.id),
+            message_id= str(interaction.message.id)
+        )
 
-        url = f"{settings.HELPR_URL}/api/tickets/claim"
-        payload = {"discordId": userId, "ticketId": ticketId}
-        headers = create_hmac(payload)
-
-        async with httpx.AsyncClient() as client:
-            response = await client.post(url, json=payload, headers=headers)
-            data = response.json()
-            logger.info(f"Claim ticket post request result: {response.status_code}")
-
-            if data.get("code") == "DISCORD_NOT_LINKED":
-                # discord account not linked
-                link_url = f"{settings.HELPR_URL}/link/discord"
-                # send private followup with url to link account
-                await interaction.followup.send(
-                    content=f"Your helpr account isn't linked to your discord! [Click here to link your Discord]({link_url})",
-                    ephemeral=True,
-                )
-                return
-
-            elif data.get("code") == "HAS_EXISTING_TICKET":
-                link_url = f"{settings.HELPR_URL}/mentor"
-                await interaction.followup.send(
-                    content="You already have an active ticket. Before claiming another, either mark it as finished or unclaim it.\n"
-                    f"[Manage your ticket here]({link_url})",
-                    ephemeral=True,
-                )
-                return
-
-            elif data.get("code") == "TICKET_ALREADY_CLAIMED":
-                await interaction.followup.send(
-                    content ="This ticket has already been claimed",
-                    ephemeral=True,
-                )
-                return
-
-            elif response.status_code != 200:
-                logger.info(f"Claim ticket failed: {response.text}")
-                # TODO: might not want to be a global edit?
-                button.disabled = True
-                await self.edit_interaction(
-                    interaction,
-                    edited_msg=f"Something went wrong. Please claim directly from [helpr]({settings.HELPR_URL})!",
-                    embed_color=discord.Color.red(),
-                )
-                return
-
-            # TODO: add button to unclaim/resolve (only for claimed user)
-            # success: mark as claimed and change embed of message
-            button.label = "Claimed"
-            button.style = discord.ButtonStyle.success
-            button.disabled = True
-
-            claimant_name = data.get("claimant").get("name")
-            await self.edit_interaction(
-                interaction,
-                edited_msg=f"Ticket claimed by {interaction.user.mention}!",
-                embed_color=discord.Color.green(),
-                embed_footer=f"Claimed by {claimant_name}",
-            )
+        await UpdateTicket.claim(ticket_update, interaction, button)
