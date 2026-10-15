@@ -49,3 +49,7 @@ class ChannelNotFound(NotFound):
 class InvalidChannelType(BadRequest):
     def __init__(self, correct_channel_type: str, channel_id: str = "id") -> None:
         super().__init__(message=f"Provided channel ID ({channel_id}) is not of type {correct_channel_type}.")
+
+class MessageNotFound(NotFound):
+    def __init__(self, message_id: str = "id") -> None:
+        super().__init__(message=f"Requested message ID ({message_id}) not found.")
