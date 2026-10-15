@@ -22,3 +22,7 @@ class TicketDetails(BaseModel):
     ticket_id: str
     resolved: bool
     _created_at: datetime = datetime.now(UTC)
+
+class TicketUpdate(TicketDetails):
+    channel_id: str
+    message_id: str
