@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from src.deps import Helpr
-from src.schemas import TicketDetails
+from src.schemas import TicketDetails, TicketUpdate
 from src.utils.crypto import verify_hmac
 
 router = APIRouter(
@@ -13,3 +13,7 @@ router = APIRouter(
 @router.post("/ping-mentor")
 async def ping_mentor( ticket_details: TicketDetails, service: Helpr, ):
     return await service.ping_mentor(ticket_details)
+
+@router.post("/update-ticket")
+async def update_ticket( ticket_details: TicketUpdate, service: Helpr):
+    return await service.update_ticket(ticket_details)
