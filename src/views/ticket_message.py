@@ -9,7 +9,7 @@ from src.utils.config import settings
 from src.exceptions.custom_exceptions import (
     InvalidChannelType,
     MessageNotFound,
-    ChannelNotFound
+    ChannelNotFound,
 )
 
 from src.views.embeds import TicketEmbeds
@@ -19,6 +19,7 @@ from src.views.buttons import TicketButtons
 logger = logging.getLogger(__name__)
 
 
+# TODO: look into what should remain in views and what should go in a templates fodler
 class TicketMessage:
     @staticmethod
     async def get_ticket_message(ticket: TicketUpdate) -> discord.Message:
