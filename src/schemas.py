@@ -15,7 +15,6 @@ class User(HelprModel):
     discord_id: str | None = Field(default=None, alias="discordId")
 
 
-# TODO: Add aliases to match buzz responses
 class TicketDetails(HelprModel):
     author: User
     claimant: User | None = None
