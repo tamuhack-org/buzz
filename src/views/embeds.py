@@ -7,9 +7,12 @@ class TicketEmbeds:
     @staticmethod
     def generic_ticket(
         ticket_details: TicketDetails,
-        color: discord.Color = discord.Color.purple(),
+        color: discord.Color | None = None,
         footer_text: str = "Helpr",
     ) -> discord.Embed:
+        if color is None:
+            color = discord.Color.blurple()
+
         embed = discord.Embed(
             title="New Ticket!",
             description=f"**Issue:** {ticket_details.issue}",

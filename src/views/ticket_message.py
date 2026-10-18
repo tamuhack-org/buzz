@@ -52,12 +52,11 @@ class TicketMessage:
             logger.info("Provided mentor channel is not a text channel")
             raise InvalidChannelType("text channel", str(settings.MENTOR_CHANNEL_ID))
 
-        mentor_ping = f"<@&{settings.MENTOR_ROLE_ID}>"
         content = TicketMessages.ticket_available(ticket_details)
         embed = TicketEmbeds.ticket_available(ticket_details)
         view = TicketButtons(ticket_details)
 
-        message = await channel.send(content=mentor_ping, embed=embed, view=view)
+        message = await channel.send(content=content, embed=embed, view=view)
         message_info = {
             "channel_id": str(message.channel.id),
             "message_id": str(message.id),

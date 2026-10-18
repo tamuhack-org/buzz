@@ -2,11 +2,9 @@ from enum import Enum
 import logging
 
 import discord
-import httpx
 
 from src.schemas import TicketDetails, TicketUpdate
 from src.utils.config import settings
-from src.utils.crypto import create_hmac
 from src.utils.followups import generic_error_followup
 
 logger = logging.getLogger(__name__)
