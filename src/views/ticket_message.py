@@ -14,7 +14,7 @@ from src.exceptions.custom_exceptions import (
 
 from src.views.embeds import TicketEmbeds
 from src.views.messages import TicketMessages
-from src.views.buttons import TicketButtons
+from src.views.buttons import TicketButtons, TicketState
 
 logger = logging.getLogger(__name__)
 
@@ -75,28 +75,32 @@ class TicketMessage:
     async def update_ticket_message(ticket_details: TicketUpdate):
         message = await TicketMessage.get_ticket_message(ticket_details)
         if ticket_details.resolved and ticket_details.claimant is not None:
+            state = TicketState.RESOLVED
             content = TicketMessages.ticket_resolved(ticket_details)
             embed = TicketEmbeds.ticket_resolved(ticket_details)
 
         elif ticket_details.claimant and ticket_details.claimant.user_id is not None:
+            state = TicketState.CLAIMED
             content = TicketMessages.ticket_claimed(ticket_details)
             embed = TicketEmbeds.ticket_claimed(ticket_details)
 
         elif not ticket_details.claimant:
+            state = TicketState.AVAILABLE
             content = TicketMessages.ticket_available(ticket_details)
             embed = TicketEmbeds.ticket_available(ticket_details)
 
         else:
             # some kinda indeterminant error state
+            state = TicketState.ERROR
             content = TicketMessages.ticket_available(ticket_details)
             embed = TicketEmbeds.ticket_available(ticket_details)
-            await message.edit(
-                content=content,
-                embed=embed,
-            )
+            view = TicketButtons(ticket_details, state)
+            await message.edit(content=content, embed=embed, view=view)
             raise HTTPException(status_code=422, detail="ticket state inconsistent")
 
+        view = TicketButtons(ticket_details, state)
         await message.edit(
             content=content,
             embed=embed,
+            view=view,
         )
