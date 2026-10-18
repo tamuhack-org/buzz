@@ -16,8 +16,9 @@ errors = {
     "DISCORD_NOT_LINKED": f"Your helpr account isn't linked to your discord! [Click here to link your Discord]({helpr_url}/link/discord)",
     "HAS_EXISTING_TICKET": f"You already have an active ticket. Before claiming another, either mark it as finished or unclaim it.\n[Manage your ticket here]({helpr_url})",
     "TICKET_ALREADY_CLAIMED": "This ticket has already been claimed",
-    "TICKET_MISMATCH": f"You have no claimed ticket or your claimed ticket differs from the ticket you're trying to unclaim. No changes were made.\n[Manage your ticket here]({helpr_url})",
+    "TICKET_MISMATCH": f"You can't edit a ticket you have not claimed. No changes were made.\n[Manage your ticket here]({helpr_url})",
 }
+
 
 class UpdateTicket:
     @staticmethod
@@ -100,4 +101,3 @@ class UpdateTicket:
         await UpdateTicket._update(
             ticket_details, interaction, endpoint="resolve", errors=errors
         )
-
