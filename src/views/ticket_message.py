@@ -72,8 +72,15 @@ class TicketMessage:
         }
 
     @staticmethod
-    async def update_ticket_message(ticket_details: TicketUpdate):
-        message = await TicketMessage.get_ticket_message(ticket_details)
+    async def update_ticket_message(
+        ticket_details: TicketUpdate, interaction: discord.Interaction | None = None
+    ):
+        if interaction is not None:
+            message_editor = interaction.edit_original_response
+        else:
+            message = await TicketMessage.get_ticket_message(ticket_details)
+            message_editor = message.edit
+
         if ticket_details.resolved and ticket_details.claimant is not None:
             state = TicketState.RESOLVED
             content = TicketMessages.ticket_resolved(ticket_details)
@@ -95,11 +102,11 @@ class TicketMessage:
             content = TicketMessages.ticket_available(ticket_details)
             embed = TicketEmbeds.ticket_available(ticket_details)
             view = TicketButtons(ticket_details, state)
-            await message.edit(content=content, embed=embed, view=view)
+            await message_editor(content=content, embed=embed, view=view)
             raise HTTPException(status_code=422, detail="ticket state inconsistent")
 
         view = TicketButtons(ticket_details, state)
-        await message.edit(
+        await message_editor(
             content=content,
             embed=embed,
             view=view,
