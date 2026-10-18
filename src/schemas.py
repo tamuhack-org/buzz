@@ -31,5 +31,10 @@ class TicketDetails(HelprModel):
 
 
 class TicketUpdate(TicketDetails):
-    channel_id: str = Field(alias="discordChannelId")
-    message_id: str = Field(alias="discordMessageId")
+    #using both validation and serialization aliases for pyright to recognize field names
+    channel_id: str = Field(
+        validation_alias="discordChannelId", serialization_alias="discordChannelId"
+    )
+    message_id: str = Field(
+        validation_alias="discordMessageId", serialization_alias="discordMessageId"
+    )
