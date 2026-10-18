@@ -19,6 +19,8 @@ class TicketState(str, Enum):
     ERROR = "error"
 
 
+# NOTE: Looks like discord doesn't allow you to disable buttons only for some users :(
+
 # TODO: Fix literally everything to do with buttons
 class TicketButtons(discord.ui.View):
     async def _make_ticket_update(
@@ -63,6 +65,10 @@ class TicketButtons(discord.ui.View):
             )
             unclaim_button.callback = self.unclaim
             self.add_item(unclaim_button)
+
+        else:
+            # don't want view ticket if resolved
+            return
 
         self.add_item(
             discord.ui.Button(
