@@ -12,12 +12,20 @@ from src.views.ticket_message import TicketMessage
 logger = logging.getLogger(__name__)
 
 helpr_url = settings.HELPR_URL
-errors = {
-    "DISCORD_NOT_LINKED": f"Your helpr account isn't linked to your discord! [Click here to link your Discord]({helpr_url}/link/discord)",
-    "HAS_EXISTING_TICKET": f"You already have an active ticket. Before claiming another, either mark it as finished or unclaim it.\n[Manage your ticket here]({helpr_url})",
-    "TICKET_ALREADY_CLAIMED": "This ticket has already been claimed",
-    "TICKET_MISMATCH": f"You can't edit a ticket you have not claimed. No changes were made.\n[Manage your ticket here]({helpr_url})",
-}
+class HelprError(enum.StrEnum):
+    DISCORD_NOT_LINKED = (
+      f"Your Helpr account isn't linked to Discord! "
+      f"[Link your Discord]({settings.HELPR_URL}/link/discord)"
+    )
+    HAS_EXISTING_TICKET = (
+      "You already have an active ticket. Mark it as finished or unclaim it first.\n"
+      f"[Manage your tickets]({settings.HELPR_URL})"
+    )
+    TICKET_ALREADY_CLAIMED = "This ticket has already been claimed."
+    TICKET_MISMATCH = (
+      "You can't edit a ticket you haven't claimed. No changes were made.\n"
+      f"[Manage your tickets]({settings.HELPR_URL})"
+    )
 
 
 class UpdateTicket:
@@ -29,7 +37,7 @@ class UpdateTicket:
         interaction: discord.Interaction,
         *,
         endpoint: str,
-        errors: dict[str, str],
+        errors: type[HelprError],
     ):
         # let discord know this might take a while and not timeout
         # TODO: Look into if this is really necessary?
@@ -47,10 +55,14 @@ class UpdateTicket:
 
         data = response.json()
         code = data.get("code")
+        try:
+            error = HelprError[code]
+        except:
+            error = None
 
-        if code in errors:
+        if error in errors:
             await interaction.followup.send(
-                content=errors[code],
+                content=str(error),
                 ephemeral=True,
             )
             return
@@ -81,7 +93,7 @@ class UpdateTicket:
         interaction: discord.Interaction,
     ):
         await UpdateTicket._update(
-            ticket_details, interaction, endpoint="claim", errors=errors
+            ticket_details, interaction, endpoint="claim", errors=HelprError
         )
 
     @staticmethod
@@ -90,7 +102,7 @@ class UpdateTicket:
         interaction: discord.Interaction,
     ):
         await UpdateTicket._update(
-            ticket_details, interaction, endpoint="unclaim", errors=errors
+            ticket_details, interaction, endpoint="unclaim", errors=HelprError
         )
 
     @staticmethod
@@ -99,5 +111,5 @@ class UpdateTicket:
         interaction: discord.Interaction,
     ):
         await UpdateTicket._update(
-            ticket_details, interaction, endpoint="resolve", errors=errors
+            ticket_details, interaction, endpoint="resolve", errors=HelprError
         )
