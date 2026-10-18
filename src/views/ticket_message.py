@@ -75,6 +75,7 @@ class TicketMessage:
     async def update_ticket_message(
         ticket_details: TicketUpdate, interaction: discord.Interaction | None = None
     ):
+        # TODO: look into interaction.edit_original_response webhook dying
         if interaction is not None:
             message_editor = interaction.edit_original_response
         else:
