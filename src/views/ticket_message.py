@@ -111,3 +111,36 @@ class TicketMessage:
             embed=embed,
             view=view,
         )
+
+    # TODO: maybe move to a dedicated dm method?
+    @staticmethod
+    async def _notify_claimant(ticket_details: TicketUpdate):
+        claimant_id = (
+            ticket_details.claimant.discord_id if ticket_details.claimant else None
+        )
+        if not claimant_id:
+            return
+
+        # there was a claimant, let them know ticket was canceled
+        user = client.get_user(int(claimant_id))  # cache only
+        if not user:
+            user = await client.fetch_user(int(claimant_id))  # network request
+        if not user:
+            return
+
+        try:
+            await user.send(f"Howdy {user.mention},\nYour current ticket was canceled.")
+        except Exception:
+            logger.exception(f"Failed to notify mentor of ticket cancelation")
+
+    @staticmethod
+    async def delete_ticket_message(ticket_details: TicketUpdate):
+        try:
+            message = await TicketMessage.get_ticket_message(ticket_details)
+            await message.delete()
+            await TicketMessage._notify_claimant(ticket_details)
+
+        except discord.NotFound:
+            logger.info("Message already deleted")
+        except Exception:
+            logger.exception("Failed to delete message on ticket cancel")
