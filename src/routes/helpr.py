@@ -14,7 +14,10 @@ router = APIRouter(
 async def ping_mentor( ticket_details: TicketDetails, service: Helpr, ):
     return await service.ping_mentor(ticket_details)
 
-# TODO: Add support for hacker canceling a ticket
 @router.post("/update-ticket")
 async def update_ticket( ticket_details: TicketUpdate, service: Helpr):
     return await service.update_ticket(ticket_details)
+
+@router.post("/cancel-ticket")
+async def cancel_ticket( ticket_details: TicketUpdate, service: Helpr):
+    return await service.cancel_ticket(ticket_details)
