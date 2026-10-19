@@ -7,7 +7,7 @@ import logging
 from src.schemas import TicketUpdate
 from src.utils.config import settings
 from src.utils.crypto import create_hmac
-from src.views.ticket_message import TicketMessage
+from src.views.manage_message import TicketMessage
 
 logger = logging.getLogger(__name__)
 

@@ -1,5 +1,5 @@
 from src.schemas import TicketDetails, TicketUpdate
-from src.views.ticket_message import TicketMessage
+from src.views.manage_message import TicketMessage
 
 class HelprService:
     async def ping_mentor(self, ticket_details: TicketDetails):

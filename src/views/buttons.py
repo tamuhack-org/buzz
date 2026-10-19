@@ -78,7 +78,7 @@ class TicketButtons(discord.ui.View):
 
     # TODO: look into reducing duplicate code here
     async def claim(self, interaction: discord.Interaction):
-        from src.views.update_ticket import UpdateTicket
+        from src.utils.update_ticket import UpdateTicket
 
         ticket_update = await self._make_ticket_update(interaction)
         if ticket_update is None:
@@ -88,7 +88,7 @@ class TicketButtons(discord.ui.View):
         await UpdateTicket.claim(ticket_update, interaction)
 
     async def resolve(self, interaction: discord.Interaction):
-        from src.views.update_ticket import UpdateTicket
+        from src.utils.update_ticket import UpdateTicket
 
         ticket_update = await self._make_ticket_update(interaction)
         if ticket_update is None:
@@ -98,7 +98,7 @@ class TicketButtons(discord.ui.View):
         await UpdateTicket.resolve(ticket_update, interaction)
 
     async def unclaim(self, interaction: discord.Interaction):
-        from src.views.update_ticket import UpdateTicket
+        from src.utils.update_ticket import UpdateTicket
 
         ticket_update = await self._make_ticket_update(interaction)
         if ticket_update is None:
