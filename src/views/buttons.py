@@ -58,6 +58,7 @@ class TicketButtons(discord.ui.View):
             resolve_button.callback = self.resolve
             self.add_item(resolve_button)
 
+            # TODO: if ticket is unclaimed, look into renotifying?
             unclaim_button = discord.ui.Button(
                 label="Unclaim Ticket", style=discord.ButtonStyle.danger
             )
