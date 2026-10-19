@@ -76,6 +76,8 @@ class UpdateTicket:
             )
             return
 
+        #no need to update state directly since helper forces refresh on buzz when state changes
+        # TODO: but theres a small delay so ponder if this should remain
         try:
             updated_ticket = TicketUpdate.model_validate(data.get("ticket"))
             await TicketMessage.update_ticket_message(updated_ticket, interaction)
