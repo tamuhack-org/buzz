@@ -9,7 +9,7 @@ class TicketEmbeds:
     def generic_ticket(
         ticket_details: TicketDetails,
         color: discord.Color | None = None,
-        footer_text: str = "Helpr",
+        footer_text: str = Embeds.FOOTER_DEFAULT,
     ) -> discord.Embed:
         if color is None:
             color = discord.Color.blurple()

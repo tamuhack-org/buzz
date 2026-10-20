@@ -14,6 +14,7 @@ class Embeds:
     FIELD_HACKER = "👩🏻‍💻 Hacker"
     FIELD_LOCATION = "📍 Location"
     FIELD_CONTACT = "📞 Contact"
+    FOOTER_DEFAULT = "Helpr"
     FOOTER_AVAILABLE = "Helpr"
     FOOTER_CLAIMED = "Claimed by {claimant_name}"
     FOOTER_RESOLVED = "Resolved by {claimant_name}"
