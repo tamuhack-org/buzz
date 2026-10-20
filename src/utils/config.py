@@ -2,7 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    ENV: str = "development"
+    ENV: str = "production"
     LOG_LEVEL: str = "INFO"
     DISCORD_BOT_TOKEN: str
     MENTOR_CHANNEL_ID: int  # discord.py expects channel ID to be int
