@@ -25,7 +25,7 @@ class TicketEmbeds:
             name=Embeds.FIELD_HACKER, value=ticket_details.author.name, inline=True
         )
         embed.add_field(
-            name=Embeds.FIELD_LOCATION, value=f"`{ticket_details.location}`", inline=True
+            name=Embeds.FIELD_LOCATION, value=ticket_details.location, inline=True
         )
         embed.add_field(
             name=Embeds.FIELD_CONTACT, value=ticket_details.phone_number, inline=False
