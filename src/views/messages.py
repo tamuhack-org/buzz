@@ -7,7 +7,7 @@ from src.utils.config import settings
 class TicketMessages:
     @staticmethod
     def ticket_available(ticket_details: TicketDetails) -> str:
-        return Messages.TICKET_AVAILABLE.format(settings.MENTOR_ROLE_ID)
+        return Messages.TICKET_AVAILABLE.format(mentor_role_id=settings.MENTOR_ROLE_ID)
 
     @staticmethod
     def ticket_claimed(ticket_details: TicketDetails) -> str:
@@ -16,10 +16,12 @@ class TicketMessages:
             raise BadRequest("Ticket does not have a claimant")
 
         if ticket_details.claimant.discord_id is not None:
-            return  Messages.TICKET_CLAIMED.format(f"<@{ticket_details.claimant.discord_id}>")
+            return Messages.TICKET_CLAIMED.format(
+                claimant=f"<@{ticket_details.claimant.discord_id}>"
+            )
 
         # just use name as fallback
-        return  Messages.TICKET_CLAIMED.format(ticket_details.claimant.name)
+        return Messages.TICKET_CLAIMED.format(claimant=ticket_details.claimant.name)
 
     @staticmethod
     def ticket_resolved(ticket_details: TicketDetails) -> str:
@@ -30,11 +32,15 @@ class TicketMessages:
             raise BadRequest("Ticket does not have a claimant")
 
         if ticket_details.claimant.discord_id is not None:
-            return  Messages.TICKET_RESOLVED.format(f"<@{ticket_details.claimant.discord_id}>")
+            return Messages.TICKET_RESOLVED.format(
+                claimant=f"<@{ticket_details.claimant.discord_id}>"
+            )
 
         # just use name as fallback
-        return  Messages.TICKET_RESOLVED.format(f"<@{ticket_details.claimant.name}>")
+        return Messages.TICKET_RESOLVED.format(
+            claimant=f"<@{ticket_details.claimant.name}>"
+        )
 
     @staticmethod
     def ticket_error(ticket_details: TicketDetails) -> str:
-        return Messages.TICKET_ERROR.format(settings.HELPR_URL)
+        return Messages.TICKET_ERROR.format(helpr_url=settings.HELPR_URL)

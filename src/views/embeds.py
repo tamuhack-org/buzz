@@ -49,7 +49,7 @@ class TicketEmbeds:
         return TicketEmbeds.generic_ticket(
             ticket_details,
             discord.Color.gold(),
-            Embeds.FOOTER_CLAIMED.format(ticket_details.claimant.name)
+            Embeds.FOOTER_CLAIMED.format(claimant_name=ticket_details.claimant.name),
         )
 
     @staticmethod
@@ -60,7 +60,7 @@ class TicketEmbeds:
         return TicketEmbeds.generic_ticket(
             ticket_details,
             discord.Color.green(),
-            Embeds.FOOTER_RESOLVED.format(ticket_details.claimant.name)
+            Embeds.FOOTER_RESOLVED.format(claimant_name=ticket_details.claimant.name),
         )
 
     # generic catch all error
