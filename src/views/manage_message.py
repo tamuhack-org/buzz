@@ -2,7 +2,7 @@ import discord
 import logging
 from fastapi import HTTPException
 
-from src.schemas import TicketDetails, TicketUpdate
+from src.schemas import TicketDetails, TicketUpdate, TicketState
 from src.utils.bot import client
 from src.utils.config import settings
 
@@ -14,7 +14,7 @@ from src.exceptions.custom_exceptions import (
 
 from src.views.embeds import TicketEmbeds
 from src.views.messages import TicketMessages
-from src.views.buttons import TicketButtons, TicketState
+from src.views.buttons import TicketButtons
 
 logger = logging.getLogger(__name__)
 

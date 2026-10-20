@@ -3,18 +3,11 @@ import logging
 
 import discord
 
-from src.schemas import TicketDetails, TicketUpdate
+from src.schemas import TicketDetails, TicketState, TicketUpdate
 from src.utils.config import settings
 from src.utils.followups import generic_error_followup
 
 logger = logging.getLogger(__name__)
-
-
-class TicketState(str, Enum):
-    AVAILABLE = "available"
-    CLAIMED = "claimed"
-    RESOLVED = "resolved"
-    ERROR = "error"
 
 
 # NOTE: Looks like discord doesn't allow you to disable buttons only for some users :(

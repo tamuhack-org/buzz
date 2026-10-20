@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from enum import Enum
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -38,3 +39,10 @@ class TicketUpdate(TicketDetails):
     message_id: str = Field(
         validation_alias="discordMessageId", serialization_alias="discordMessageId"
     )
+
+class TicketState(str, Enum):
+    AVAILABLE = "available"
+    CLAIMED = "claimed"
+    RESOLVED = "resolved"
+    ERROR = "error"
+
