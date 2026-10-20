@@ -19,3 +19,9 @@ class Embeds:
     FOOTER_CLAIMED = "Claimed by {claimant_name}"
     FOOTER_RESOLVED = "Resolved by {claimant_name}"
     FOOTER_ERROR = "Helpr"
+
+class Messages:
+    TICKET_AVAILABLE = "<@{mentor_role_id}>"
+    TICKET_CLAIMED = "Ticket claimed by {claimant}"
+    TICKET_RESOLVED = "Ticket resolved by {claimant}"
+    TICKET_ERROR = "Something went wrong, please handle from helpr directly [helpr]({HELPR_URL})"
