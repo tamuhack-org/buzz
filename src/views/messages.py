@@ -43,4 +43,4 @@ class TicketMessages:
 
     @staticmethod
     def ticket_error(ticket_details: TicketDetails) -> str:
-        return Messages.TICKET_ERROR.format(helpr_url=settings.HELPR_URL)
+        return Messages.TICKET_ERROR.format()
