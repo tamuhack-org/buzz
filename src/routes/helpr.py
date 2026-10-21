@@ -30,6 +30,6 @@ async def cancel_ticket(ticket_details: TicketUpdate, service: Helpr):
 
 
 # NOTE: hmac verification only works on body so give pydantic object
-@router.post("/give-role")
-async def give_role(update_role: UpdateRole, service: Helpr):
-    return await service.give_role(update_role)
+@router.post("/give-mentor-role")
+async def give_mentor_role(update_role: UpdateRole, service: Helpr):
+    return await service.give_mentor_role(update_role)

@@ -40,6 +40,5 @@ class TicketUpdate(TicketDetails):
     )
 
 class UpdateRole(BaseModel):
-    role_id: int
     user_id: int
     server_id: int
