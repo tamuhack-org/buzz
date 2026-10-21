@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from src.deps import Helpr
-from src.schemas import TicketDetails, TicketUpdate
+from src.schemas import TicketDetails, TicketUpdate, UpdateRole
 from src.utils.crypto import verify_hmac
 
 router = APIRouter(
@@ -29,8 +29,7 @@ async def cancel_ticket(ticket_details: TicketUpdate, service: Helpr):
     return await service.cancel_ticket(ticket_details)
 
 
+# NOTE: hmac verification only works on body so give pydantic object
 @router.post("/give-role")
-async def give_role(role_id: int, user_id: int, server_id: int, service: Helpr):
-    return await service.give_role(
-        role_id=role_id, user_id=user_id, server_id=server_id
-    )
+async def give_role(update_role: UpdateRole, service: Helpr):
+    return await service.give_role(update_role)

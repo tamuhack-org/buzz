@@ -38,3 +38,8 @@ class TicketUpdate(TicketDetails):
     message_id: str = Field(
         validation_alias="discordMessageId", serialization_alias="discordMessageId"
     )
+
+class UpdateRole(BaseModel):
+    role_id: int
+    user_id: int
+    server_id: int
