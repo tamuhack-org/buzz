@@ -65,7 +65,7 @@ class UpdateTicket:
             helpr_url = settings.HELPR_URL
             logger.error(f"{endpoint} failed: {response.text}")
             await interaction.followup.send(
-                content=f"Something went wrong.\nPlease manage ticket directly from [helpr]({helpr_url})",
+                content=FollowUps.GENERIC_ERROR,
                 ephemeral=True,
             )
             return
@@ -79,7 +79,7 @@ class UpdateTicket:
             helpr_url = settings.HELPR_URL
             logger.error(f"Failed to update existing message: {err}")
             await interaction.followup.send(
-                content=f"Something went wrong.\nPlease manage ticket directly from [helpr]({helpr_url})",
+                content=FollowUps.GENERIC_ERROR,
                 ephemeral=True,
             )
 

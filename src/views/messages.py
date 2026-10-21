@@ -38,7 +38,7 @@ class TicketMessages:
 
         # just use name as fallback
         return Messages.TICKET_RESOLVED.format(
-            claimant=f"<@{ticket_details.claimant.name}>"
+            claimant=f"{ticket_details.claimant.name}"
         )
 
     @staticmethod

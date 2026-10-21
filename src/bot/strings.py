@@ -36,16 +36,20 @@ class DMs:
 
 
 class FollowUps:
+    GENERIC_ERROR = (
+        "Something went wrong"
+        f"Please claim directly from [helpr]({settings.HELPR_URL})"
+    )
     DISCORD_NOT_LINKED = (
         "Your Helpr account isn't linked to Discord! "
         f"[Link your Discord]({settings.HELPR_URL}/link/discord)"
     )
     HAS_EXISTING_TICKET = (
-        "You already have an active ticket. Mark it as finished or unclaim it first.\n"
+        "You already have an active ticket. Mark it as finished or unclaim it first."
         f"[Manage your tickets]({settings.HELPR_URL})"
     )
     TICKET_ALREADY_CLAIMED = "This ticket has already been claimed."
     TICKET_MISMATCH = (
-        "You can't edit a ticket you haven't claimed. No changes were made.\n"
+        "You can't edit a ticket you haven't claimed. No changes were made."
         f"[Manage your tickets]({settings.HELPR_URL})"
     )
