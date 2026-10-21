@@ -32,7 +32,7 @@ class TicketDetails(HelprModel):
 
 
 class TicketUpdate(TicketDetails):
-    #using both validation and serialization aliases for pyright to recognize field names
+    # using both validation and serialization aliases for pyright to recognize field names
     channel_id: str = Field(
         validation_alias="discordChannelId", serialization_alias="discordChannelId"
     )
@@ -40,9 +40,15 @@ class TicketUpdate(TicketDetails):
         validation_alias="discordMessageId", serialization_alias="discordMessageId"
     )
 
+
 class TicketState(str, Enum):
     AVAILABLE = "available"
     CLAIMED = "claimed"
     RESOLVED = "resolved"
     ERROR = "error"
 
+
+class UpdateRole(BaseModel):
+    role_id: int
+    user_id: int
+    server_id: int
