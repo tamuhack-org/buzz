@@ -2,7 +2,7 @@ import logging
 
 import discord
 
-from src.exceptions.custom_exceptions import BadRequest
+from src.exceptions.custom_exceptions import BadRequest, InternalServerError
 
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
@@ -42,5 +42,6 @@ class BotStuff:
                 logger.exception(
                     f"Something went wrong when grating user {user_id} the role {role_id} in server {server_id}\n {e}"
                 )
+                raise InternalServerError(f"Failed to give user {user_id} the role {role_id} in server {server_id}\n {e}")
 
         logger.info(f"user {user_id} now has the role {role_id} in server {server_id}")
