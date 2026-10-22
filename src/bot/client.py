@@ -13,6 +13,7 @@ class BuzzClient(discord.Client):
         await self.tree.sync()
 
     async def on_ready(self) -> None:
+        # NOTE: runs on every connection (including reconnects)
         logger.info(f"Successfully logged in as {self.user}!")
 
 client = BuzzClient()
