@@ -4,7 +4,7 @@ from fastapi import HTTPException
 
 from src.bot.strings import DMs
 from src.schemas import TicketDetails, TicketUpdate, TicketState
-from src.utils.bot import client
+from src.bot.client import client
 from src.utils.config import settings
 
 from src.exceptions.custom_exceptions import (
