@@ -82,24 +82,23 @@ class TicketMessage:
             message = await TicketMessage.get_ticket_message(ticket_details)
             message_editor = message.edit
 
-        if ticket_details.resolved and ticket_details.claimant is not None:
-            state = TicketState.RESOLVED
+        # TODO: Replace with switch cases
+        state = ticket_details.state()
+        if state == TicketState.RESOLVED:
             content = TicketMessages.ticket_resolved(ticket_details)
             embed = TicketEmbeds.ticket_resolved(ticket_details)
 
-        elif ticket_details.claimant and ticket_details.claimant.user_id is not None:
-            state = TicketState.CLAIMED
+        elif state == TicketState.CLAIMED:
             content = TicketMessages.ticket_claimed(ticket_details)
             embed = TicketEmbeds.ticket_claimed(ticket_details)
 
-        elif not ticket_details.claimant:
+        elif state == TicketState.AVAILABLE:
             state = TicketState.AVAILABLE
             content = TicketMessages.ticket_available(ticket_details)
             embed = TicketEmbeds.ticket_available(ticket_details)
 
+        #elif state == TicketState.ERROR:
         else:
-            # some kinda indeterminant error state
-            state = TicketState.ERROR
             content = TicketMessages.ticket_available(ticket_details)
             embed = TicketEmbeds.ticket_available(ticket_details)
             view = TicketButtons(ticket_details, state)
