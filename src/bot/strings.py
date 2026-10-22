@@ -37,8 +37,7 @@ class DMs:
 
 class FollowUps:
     GENERIC_ERROR = (
-        "Something went wrong"
-        f"Please claim directly from [helpr]({settings.HELPR_URL})"
+        f"Something went wrongPlease claim directly from [helpr]({settings.HELPR_URL})"
     )
     DISCORD_NOT_LINKED = (
         "Your Helpr account isn't linked to Discord! "
@@ -53,3 +52,10 @@ class FollowUps:
         "You can't edit a ticket you haven't claimed. No changes were made."
         f"[Manage your tickets]({settings.HELPR_URL})"
     )
+
+
+class Checkout:
+    NOT_MENTOR = "You're not a mentor.\nThis command is reserved for mentors."
+    NOT_USER = "Only a discord user can run this command."
+    ERROR = "Something went wrong.\nPlease contact an organizer to checkout"
+    SUCCESS = "Succesfully checked out.\nThanks for mentoring!\nNote: You still need to checkout with an organizer before leaving the venue"
