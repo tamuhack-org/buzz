@@ -1,12 +1,13 @@
 import logging
 import discord
+from discord import app_commands
 
 logger = logging.getLogger(__name__)
 
 class BuzzClient(discord.Client):
     def __init__(self) -> None:
         super().__init__(intents=discord.Intents.default())
-        self.tree = discord.app_commands.CommandTree(self)
+        self.tree = app_commands.CommandTree(self)
 
     async def setup_hook(self) -> None:
         # NOTE: runs once on login
