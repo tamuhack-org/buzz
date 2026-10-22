@@ -51,7 +51,7 @@ class UpdateTicket:
         code = data.get("code")
         try:
             error = HelprError[code]
-        except:
+        except KeyError:
             error = None
 
         if error in errors:
@@ -62,7 +62,6 @@ class UpdateTicket:
             return
 
         if response.status_code != 200:
-            helpr_url = settings.HELPR_URL
             logger.error(f"{endpoint} failed: {response.text}")
             await interaction.followup.send(
                 content=FollowUps.GENERIC_ERROR,
@@ -76,7 +75,6 @@ class UpdateTicket:
             updated_ticket = TicketUpdate.model_validate(data.get("ticket"))
             await TicketMessage.update_ticket_message(updated_ticket, interaction)
         except Exception as err:
-            helpr_url = settings.HELPR_URL
             logger.error(f"Failed to update existing message: {err}")
             await interaction.followup.send(
                 content=FollowUps.GENERIC_ERROR,
