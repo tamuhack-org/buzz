@@ -1,6 +1,4 @@
-import discord
 
-from src.exceptions.custom_exceptions import BadRequest
 from src.schemas import TicketDetails, TicketUpdate, UpdateRole
 from src.views.manage_message import TicketMessage
 from src.utils.bot import BotStuff

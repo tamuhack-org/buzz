@@ -37,7 +37,7 @@ class BotStuff:
 
         try:
             member = await guild.fetch_member(user_id)
-        except discord.NotFound as e:
+        except discord.NotFound:
             raise BadRequest(f"User {user_id} was not found in server {server_id}")
 
         if role not in member.roles:

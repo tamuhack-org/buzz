@@ -130,9 +130,9 @@ class TicketMessage:
             return
 
         try:
-            await user.send(DMs.TICKET_CANCELED.format(discord_id=user.mention))
+            await user.send(DMs.TICKET_CANCELED.format(mention=user.mention))
         except Exception:
-            logger.exception(f"Failed to notify mentor of ticket cancelation")
+            logger.exception("Failed to notify mentor of ticket cancelation")
 
     @staticmethod
     async def delete_ticket_message(ticket_details: TicketUpdate):
