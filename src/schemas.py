@@ -16,7 +16,24 @@ class User(HelprModel):
     discord_id: str | None = Field(default=None, alias="discordId")
 
 
+class TicketState(str, Enum):
+    AVAILABLE = "available"
+    CLAIMED = "claimed"
+    RESOLVED = "resolved"
+    ERROR = "error"
+
+
 class TicketDetails(HelprModel):
+    def state(self) -> TicketState:
+        if self.resolved and self.claimant:
+            return TicketState.RESOLVED
+        elif self.claimant:
+            return TicketState.CLAIMED
+        if self.claimant is None:
+            return TicketState.AVAILABLE
+        # some kinda indeterminant state
+        return TicketState.ERROR
+
     author: User
     claimant: User | None = None
     location: str
@@ -39,13 +56,6 @@ class TicketUpdate(TicketDetails):
     message_id: str = Field(
         validation_alias="discordMessageId", serialization_alias="discordMessageId"
     )
-
-
-class TicketState(str, Enum):
-    AVAILABLE = "available"
-    CLAIMED = "claimed"
-    RESOLVED = "resolved"
-    ERROR = "error"
 
 
 class UpdateRole(BaseModel):
