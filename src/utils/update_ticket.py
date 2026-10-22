@@ -4,6 +4,7 @@ import discord
 import httpx
 import logging
 
+from src.bot.strings import FollowUps
 from src.schemas import TicketUpdate
 from src.utils.config import settings
 from src.utils.crypto import create_hmac
@@ -12,20 +13,13 @@ from src.views.manage_message import TicketMessage
 logger = logging.getLogger(__name__)
 
 helpr_url = settings.HELPR_URL
+
+
 class HelprError(enum.StrEnum):
-    DISCORD_NOT_LINKED = (
-      f"Your Helpr account isn't linked to Discord! "
-      f"[Link your Discord]({settings.HELPR_URL}/link/discord)"
-    )
-    HAS_EXISTING_TICKET = (
-      "You already have an active ticket. Mark it as finished or unclaim it first.\n"
-      f"[Manage your tickets]({settings.HELPR_URL})"
-    )
-    TICKET_ALREADY_CLAIMED = "This ticket has already been claimed."
-    TICKET_MISMATCH = (
-      "You can't edit a ticket you haven't claimed. No changes were made.\n"
-      f"[Manage your tickets]({settings.HELPR_URL})"
-    )
+    DISCORD_NOT_LINKED = FollowUps.DISCORD_NOT_LINKED
+    HAS_EXISTING_TICKET = FollowUps.HAS_EXISTING_TICKET
+    TICKET_ALREADY_CLAIMED = FollowUps.TICKET_ALREADY_CLAIMED
+    TICKET_MISMATCH = FollowUps.TICKET_MISMATCH
 
 
 class UpdateTicket:
@@ -71,12 +65,12 @@ class UpdateTicket:
             helpr_url = settings.HELPR_URL
             logger.error(f"{endpoint} failed: {response.text}")
             await interaction.followup.send(
-                content=f"Something went wrong.\nPlease manage ticket directly from [helpr]({helpr_url})",
+                content=FollowUps.GENERIC_ERROR,
                 ephemeral=True,
             )
             return
 
-        #no need to update state directly since helper forces refresh on buzz when state changes
+        # no need to update state directly since helper forces refresh on buzz when state changes
         # TODO: but theres a small delay so ponder if this should remain
         try:
             updated_ticket = TicketUpdate.model_validate(data.get("ticket"))
@@ -85,7 +79,7 @@ class UpdateTicket:
             helpr_url = settings.HELPR_URL
             logger.error(f"Failed to update existing message: {err}")
             await interaction.followup.send(
-                content=f"Something went wrong.\nPlease manage ticket directly from [helpr]({helpr_url})",
+                content=FollowUps.GENERIC_ERROR,
                 ephemeral=True,
             )
 

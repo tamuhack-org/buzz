@@ -2,7 +2,8 @@ import discord
 import logging
 from fastapi import HTTPException
 
-from src.schemas import TicketDetails, TicketUpdate
+from src.bot.strings import DMs
+from src.schemas import TicketDetails, TicketUpdate, TicketState
 from src.utils.bot import client
 from src.utils.config import settings
 
@@ -14,7 +15,7 @@ from src.exceptions.custom_exceptions import (
 
 from src.views.embeds import TicketEmbeds
 from src.views.messages import TicketMessages
-from src.views.buttons import TicketButtons, TicketState
+from src.views.buttons import TicketButtons
 
 logger = logging.getLogger(__name__)
 
@@ -129,7 +130,7 @@ class TicketMessage:
             return
 
         try:
-            await user.send(f"Howdy {user.mention},\nYour current ticket was canceled.")
+            await user.send(DMs.TICKET_CANCELED.format(discord_id=user.mention))
         except Exception:
             logger.exception(f"Failed to notify mentor of ticket cancelation")
 

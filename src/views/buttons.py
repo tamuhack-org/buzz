@@ -3,18 +3,12 @@ import logging
 
 import discord
 
-from src.schemas import TicketDetails, TicketUpdate
+from src.bot.strings import Buttons
+from src.schemas import TicketDetails, TicketState, TicketUpdate
 from src.utils.config import settings
 from src.utils.followups import generic_error_followup
 
 logger = logging.getLogger(__name__)
-
-
-class TicketState(str, Enum):
-    AVAILABLE = "available"
-    CLAIMED = "claimed"
-    RESOLVED = "resolved"
-    ERROR = "error"
 
 
 # NOTE: Looks like discord doesn't allow you to disable buttons only for some users :(
@@ -46,21 +40,21 @@ class TicketButtons(discord.ui.View):
 
         if state == TicketState.AVAILABLE:
             button = discord.ui.Button(
-                label="Claim Ticket", style=discord.ButtonStyle.blurple
+                label=Buttons.CLAIM, style=discord.ButtonStyle.blurple
             )
             button.callback = self.claim
             self.add_item(button)
 
         elif state == TicketState.CLAIMED:
             resolve_button = discord.ui.Button(
-                label="Resolve Ticket", style=discord.ButtonStyle.green
+                label=Buttons.RESOLVE, style=discord.ButtonStyle.green
             )
             resolve_button.callback = self.resolve
             self.add_item(resolve_button)
 
             # TODO: if ticket is unclaimed, look into renotifying?
             unclaim_button = discord.ui.Button(
-                label="Unclaim Ticket", style=discord.ButtonStyle.danger
+                label=Buttons.UNCLAIM, style=discord.ButtonStyle.danger
             )
             unclaim_button.callback = self.unclaim
             self.add_item(unclaim_button)
@@ -71,7 +65,7 @@ class TicketButtons(discord.ui.View):
 
         self.add_item(
             discord.ui.Button(
-                label="View Ticket",
+                label=Buttons.VIEW,
                 url=f"{settings.HELPR_URL}/mentor",
             )
         )

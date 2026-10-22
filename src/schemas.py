@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from enum import Enum
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -31,13 +32,21 @@ class TicketDetails(HelprModel):
 
 
 class TicketUpdate(TicketDetails):
-    #using both validation and serialization aliases for pyright to recognize field names
+    # using both validation and serialization aliases for pyright to recognize field names
     channel_id: str = Field(
         validation_alias="discordChannelId", serialization_alias="discordChannelId"
     )
     message_id: str = Field(
         validation_alias="discordMessageId", serialization_alias="discordMessageId"
     )
+
+
+class TicketState(str, Enum):
+    AVAILABLE = "available"
+    CLAIMED = "claimed"
+    RESOLVED = "resolved"
+    ERROR = "error"
+
 
 class UpdateRole(BaseModel):
     role_id: int
