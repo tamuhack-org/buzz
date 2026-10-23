@@ -2,10 +2,9 @@ from dataclasses import dataclass
 
 import discord
 
-from src.bot.strings import Embeds, Messages
-from src.schemas import TicketDetails, TicketState, User
+from src.bot.strings import Buttons, Embeds, Messages
+from src.schemas import TicketAction, TicketDetails, TicketState, User
 from src.utils.config import settings
-from src.views.buttons import TicketButtons  # replaced in step 6
 
 
 @dataclass
@@ -42,9 +41,50 @@ def _embed(ticket: TicketDetails, color: discord.Color, footer: str) -> discord.
     return embed
 
 
+def action_custom_id(action: TicketAction, ticket_id: str) -> str:
+    return f"buzz:{action}:{ticket_id}"
+
+
+def _view(ticket: TicketDetails) -> discord.ui.View:
+    view = discord.ui.View(timeout=None)
+    # TODO: make button colors more easily editable?
+    if ticket.state == TicketState.AVAILABLE:
+        print("CLAIMABLE")
+        view.add_item(
+            discord.ui.Button(
+                label=Buttons.CLAIM,
+                style=discord.ButtonStyle.blurple,
+                custom_id=action_custom_id(TicketAction.CLAIM, ticket.ticket_id),
+            )
+        )
+    elif ticket.state == TicketState.CLAIMED:
+        view.add_item(
+            discord.ui.Button(
+                label=Buttons.RESOLVE,
+                style=discord.ButtonStyle.green,
+                custom_id=action_custom_id(TicketAction.RESOLVE, ticket.ticket_id),
+            )
+        )
+        view.add_item(
+            discord.ui.Button(
+                label=Buttons.UNCLAIM,
+                style=discord.ButtonStyle.danger,
+                custom_id=action_custom_id(TicketAction.UNCLAIM, ticket.ticket_id),
+            )
+        )
+    elif ticket.state == TicketState.RESOLVED:
+        return view
+
+    # keep view tickeet for error state
+    view.add_item(
+        discord.ui.Button(label=Buttons.VIEW, url=f"{settings.HELPR_URL}/mentor")
+    )
+    return view
+
+
 def render_ticket(ticket: TicketDetails) -> RenderedTicket:
     state = ticket.state()
-    view = TicketButtons(ticket, state)
+    view = _view(ticket)
     claimant = ticket.claimant
 
     # TODO: Switch cases :D
