@@ -4,8 +4,8 @@ import discord
 import httpx
 import logging
 
-from clients import helpr_client
-from clients.helpr_client import HelprApiError
+from src.clients import helpr_client
+from src.clients.helpr_client import HelprApiError
 from src.bot.strings import FollowUps
 from src.schemas import TicketUpdate
 from src.utils.config import settings
@@ -32,38 +32,37 @@ class UpdateTicket:
 
         try:
             updated_ticket = await helpr_client.post_ticket_action(
-              endpoint, discord_id=str(interaction.user.id), ticket_id=ticket_details.ticket_id
+                endpoint,
+                discord_id=str(interaction.user.id),
+                ticket_id=ticket_details.ticket_id,
             )
         except HelprApiError as err:
             if err.code is None:
-              logger.error(str(err))
-            await interaction.followup.send(str(err.code or FollowUps.GENERIC_ERROR), ephemeral=True)
+                logger.error(str(err))
+            await interaction.followup.send(
+                str(err.code or FollowUps.GENERIC_ERROR), ephemeral=True
+            )
             return
 
+            await TicketMessage.update_ticket_message(updated_ticket, interaction)
 
     @staticmethod
     async def claim(
         ticket_details: TicketUpdate,
         interaction: discord.Interaction,
     ):
-        await UpdateTicket._update(
-            ticket_details, interaction, endpoint="claim"
-        )
+        await UpdateTicket._update(ticket_details, interaction, endpoint="claim")
 
     @staticmethod
     async def unclaim(
         ticket_details: TicketUpdate,
         interaction: discord.Interaction,
     ):
-        await UpdateTicket._update(
-            ticket_details, interaction, endpoint="unclaim"
-        )
+        await UpdateTicket._update(ticket_details, interaction, endpoint="unclaim")
 
     @staticmethod
     async def resolve(
         ticket_details: TicketUpdate,
         interaction: discord.Interaction,
     ):
-        await UpdateTicket._update(
-            ticket_details, interaction, endpoint="resolve"
-        )
+        await UpdateTicket._update(ticket_details, interaction, endpoint="resolve")
