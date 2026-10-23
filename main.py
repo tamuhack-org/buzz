@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from clients import helpr_client
 from src.routes import helpr
 from src.utils.config import settings
 from src.bot.client import client
@@ -25,6 +26,7 @@ async def lifespan(app: FastAPI):
     bot_task = asyncio.create_task(client.start(settings.DISCORD_BOT_TOKEN))
     yield
     await client.close()
+    await helpr_client.close()
 
 
 app = FastAPI(lifespan=lifespan)
