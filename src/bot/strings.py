@@ -38,6 +38,12 @@ class DMs:
         "When you're done with your shift you can simply run /checkout in the server (or here) to stop receiving notifications.\n"
         "Thank you again for mentoring and we hope you have fun! "
     )
+    NOT_IN_SERVER = (
+        "You need to be in the TAMUhack server to get help ticket alerts.\n"
+        "You can join here:\n"
+        # TODO: generate dynamic link from settings.SERVER_ID?
+        "https://discord.com/invite/fTTq42Qsz5"
+    )
     TICKET_CANCELED = "Howdy {mention},\nYour current ticket was canceled."
 
 
@@ -61,6 +67,8 @@ class FollowUps:
 class Checkout:
     NOT_MENTOR = "You're not a mentor.\nThis command is reserved for mentors."
     NOT_USER = "Only a discord user can run this command."
-    NOT_FOUND = "We could not find you in the server. Are you sure you're part of the server?"
+    NOT_FOUND = (
+        "We could not find you in the server. Are you sure you're part of the server?"
+    )
     ERROR = "Something went wrong.\nPlease contact an organizer to checkout"
     SUCCESS = "Successfully checked out.\nThanks for mentoring!\nNote: You still need to checkout with an organizer before leaving the venue"
