@@ -12,5 +12,5 @@ async def get_ticket_service() -> TicketService:
 async def get_role_service() -> RoleService:
     return RoleService()
 
-Tickets = Annotated[TicketService, Depends(get_ticket_service)]
-Roles = Annotated[RoleService, Depends(get_role_service)]
+TicketServiceDep = Annotated[TicketService, Depends(get_ticket_service)]
+RoleServiceDep = Annotated[RoleService, Depends(get_role_service)]
