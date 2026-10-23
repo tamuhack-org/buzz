@@ -43,9 +43,7 @@ async def verify_hmac(request: Request):
         raise Unauthorized("HMAC Signature Does not match")
 
 
-def create_hmac(data: dict):
-    # TODO: look into if keys should be sorted?
-    json_payload = json.dumps(data, separators=(',', ':'))
+def create_hmac(json_payload: str):
     hmac_timestamp = time.time()
     msg = f"{hmac_timestamp}{json_payload}".encode()
 

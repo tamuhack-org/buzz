@@ -37,7 +37,7 @@ async def close() -> None:
 async def post_ticket_action(
     action: str, *, discord_id: str, ticket_id: str
 ) -> TicketUpdate:
-    body = {"discordId": discord_id, "ticketId": ticket_id}
+    body = json.dumps({"discordId": discord_id, "ticketId": ticket_id}, separators=(",", ":"))
     headers = create_hmac(body) | {"Content-Type": "application/json"}
 
     try:
