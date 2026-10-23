@@ -36,9 +36,7 @@ class DMs:
 
 
 class FollowUps:
-    GENERIC_ERROR = (
-        f"Something went wrong\nPlease claim directly from [helpr]({settings.HELPR_URL})"
-    )
+    GENERIC_ERROR = f"Something went wrong\nPlease claim directly from [helpr]({settings.HELPR_URL})"
     DISCORD_NOT_LINKED = (
         "Your Helpr account isn't linked to Discord! "
         f"[Link your Discord]({settings.HELPR_URL}/link/discord)"
