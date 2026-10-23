@@ -1,13 +1,14 @@
 import logging
 import discord
 
+from src.bot.strings import DMs
 from src.exceptions.custom_exceptions import BadRequest, InternalServerError
 from src.bot.client import client
 
 logger = logging.getLogger(__name__)
 
 class RoleService:
-    async def give_role(*, role_id: int, user_id: int, server_id: int):
+    async def give_role(self, *, role_id: int, user_id: int, server_id: int):
         logger.info(
             f"attempting to give user {user_id} the role {role_id} in server {server_id}"
         )
@@ -34,5 +35,12 @@ class RoleService:
                 raise InternalServerError(
                     f"Failed to give user {user_id} the role {role_id} in server {server_id}\n {e}"
                 )
+
+        #successfully added role
+        try:
+            await member.send(DMs.WELCOME.format(mention=member.mention))
+        except Exception:
+            logger.exception("failed to DM welcome message to mentor")
+
 
         logger.info(f"user {user_id} now has the role {role_id} in server {server_id}")
