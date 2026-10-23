@@ -1,9 +1,10 @@
 import logging
+
 import discord
 
+from src.bot.client import client
 from src.bot.strings import DMs
 from src.exceptions.custom_exceptions import BadRequest, InternalServerError
-from src.bot.client import client
 
 logger = logging.getLogger(__name__)
 

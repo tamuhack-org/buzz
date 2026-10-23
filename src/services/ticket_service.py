@@ -1,21 +1,20 @@
-import discord
 import logging
+
+import discord
 from fastapi import HTTPException
 
-from src.clients import helpr_client
+from src.bot.client import client
 from src.bot.render import render_ticket
 from src.bot.strings import DMs
-from src.schemas import TicketDetails, TicketUpdate, TicketState
-from src.bot.client import client
-from src.utils.config import settings
-
+from src.clients import helpr_client
 from src.exceptions.custom_exceptions import (
+    ChannelNotFound,
     InternalServerError,
     InvalidChannelType,
     MessageNotFound,
-    ChannelNotFound,
 )
-
+from src.schemas import TicketDetails, TicketState, TicketUpdate
+from src.utils.config import settings
 
 logger = logging.getLogger(__name__)
 

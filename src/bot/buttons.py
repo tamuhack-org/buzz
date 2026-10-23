@@ -1,4 +1,5 @@
 import logging
+
 import discord
 
 from src.bot.strings import FollowUps
