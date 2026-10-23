@@ -48,7 +48,7 @@ def action_custom_id(action: TicketAction, ticket_id: str) -> str:
 def _view(ticket: TicketDetails) -> discord.ui.View:
     view = discord.ui.View(timeout=None)
     # TODO: make button colors more easily editable?
-    if ticket.state == TicketState.AVAILABLE:
+    if ticket.state() == TicketState.AVAILABLE:
         print("CLAIMABLE")
         view.add_item(
             discord.ui.Button(
@@ -57,7 +57,7 @@ def _view(ticket: TicketDetails) -> discord.ui.View:
                 custom_id=action_custom_id(TicketAction.CLAIM, ticket.ticket_id),
             )
         )
-    elif ticket.state == TicketState.CLAIMED:
+    elif ticket.state() == TicketState.CLAIMED:
         view.add_item(
             discord.ui.Button(
                 label=Buttons.RESOLVE,
@@ -72,7 +72,7 @@ def _view(ticket: TicketDetails) -> discord.ui.View:
                 custom_id=action_custom_id(TicketAction.UNCLAIM, ticket.ticket_id),
             )
         )
-    elif ticket.state == TicketState.RESOLVED:
+    elif ticket.state() == TicketState.RESOLVED:
         return view
 
     # keep view tickeet for error state
