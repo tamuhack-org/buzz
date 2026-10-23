@@ -35,7 +35,7 @@ class DMs:
     WELCOME = (
         "Howdy {mention}!\n"
         "You'll now be alerted when there's a new help ticket.\n"
-        "When you're done with your shift you can simply run /checkout in the server to stop receiving notifications.\n"
+        "When you're done with your shift you can simply run /checkout in the server (or here) to stop receiving notifications.\n"
         "Thank you again for mentoring and we hope you have fun! "
     )
     TICKET_CANCELED = "Howdy {mention},\nYour current ticket was canceled."
@@ -61,5 +61,6 @@ class FollowUps:
 class Checkout:
     NOT_MENTOR = "You're not a mentor.\nThis command is reserved for mentors."
     NOT_USER = "Only a discord user can run this command."
+    NOT_FOUND = "We could not find you in the server. Are you sure you're part of the server?"
     ERROR = "Something went wrong.\nPlease contact an organizer to checkout"
     SUCCESS = "Successfully checked out.\nThanks for mentoring!\nNote: You still need to checkout with an organizer before leaving the venue"
