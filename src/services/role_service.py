@@ -7,6 +7,7 @@ from src.bot.client import client
 
 logger = logging.getLogger(__name__)
 
+
 class RoleService:
     async def give_role(self, *, role_id: int, user_id: int, server_id: int):
         logger.info(
@@ -23,6 +24,13 @@ class RoleService:
         try:
             member = await guild.fetch_member(user_id)
         except discord.NotFound:
+            user = client.get_user(user_id) or await client.fetch_user(user_id)
+            try:
+                await user.send(DMs.NOT_IN_SERVER)
+            except discord.Forbidden:
+                # TODO: redirect to a helpr page with invite link and ask to rerun discord link
+                logger.info("Could not DM user %s; their DMs may be closed", user_id)
+
             raise BadRequest(f"User {user_id} was not found in server {server_id}")
 
         if role not in member.roles:
@@ -36,11 +44,10 @@ class RoleService:
                     f"Failed to give user {user_id} the role {role_id} in server {server_id}\n {e}"
                 )
 
-        #successfully added role
+        # successfully added role
         try:
             await member.send(DMs.WELCOME.format(mention=member.mention))
         except Exception:
             logger.exception("failed to DM welcome message to mentor")
-
 
         logger.info(f"user {user_id} now has the role {role_id} in server {server_id}")
