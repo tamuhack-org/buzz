@@ -1,17 +1,12 @@
-import enum
 
 import discord
-import httpx
 import logging
 
-from services.ticket_service import TicketService
-from src.clients import helpr_client
+from src.services.ticket_service import TicketService
 from src.clients.helpr_client import HelprApiError
 from src.bot.strings import FollowUps
 from src.schemas import TicketUpdate
 from src.utils.config import settings
-from src.utils.crypto import create_hmac
-from src.views.manage_message import TicketMessage
 
 logger = logging.getLogger(__name__)
 
