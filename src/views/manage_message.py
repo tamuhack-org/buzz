@@ -14,9 +14,6 @@ from src.exceptions.custom_exceptions import (
     ChannelNotFound,
 )
 
-from src.views.embeds import TicketEmbeds
-from src.views.messages import TicketMessages
-from src.views.buttons import TicketButtons
 
 logger = logging.getLogger(__name__)
 
