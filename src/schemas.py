@@ -1,5 +1,5 @@
 from datetime import UTC, datetime
-from enum import Enum
+from enum import Enum, StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -14,6 +14,12 @@ class User(HelprModel):
     user_id: str = Field(alias="id")
     is_mentor: bool = Field(alias="mentor")
     discord_id: str | None = Field(default=None, alias="discordId")
+
+
+class TicketAction(StrEnum):
+    CLAIM = "claim"
+    UNCLAIM = "unclaim"
+    RESOLVE = "resolve"
 
 
 class TicketState(str, Enum):
