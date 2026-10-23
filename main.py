@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from clients import helpr_client
+from src.clients import helpr_client
 from src.routes import helpr
 from src.utils.config import settings
 from src.bot.client import client
