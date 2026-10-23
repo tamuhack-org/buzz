@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
+from src.bot.buttons import TicketActionButton
 from src.clients import helpr_client
 from src.routes import helpr
 from src.utils.config import settings
@@ -21,6 +22,7 @@ logger = logging.getLogger(__name__)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     client.tree.add_command(checkout)
+    client.add_dynamic_items(TicketActionButton)
     # NOTE: use asyncio to spin up new task because client.start runs infinitely
     # keep reference so its not garbage collected
     bot_task = asyncio.create_task(client.start(settings.DISCORD_BOT_TOKEN))
