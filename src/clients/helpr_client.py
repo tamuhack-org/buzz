@@ -42,7 +42,7 @@ async def post_ticket_action(
 
     try:
         response = await _http.post(
-            f"/api/tickets/{action}", content=json.dumps(body), headers=headers
+            f"/api/tickets/{action}", content=body, headers=headers
         )
     except httpx.HTTPError as err:
         raise HelprApiError(None, str(err)) from err
