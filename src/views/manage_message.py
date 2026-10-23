@@ -2,6 +2,7 @@ import discord
 import logging
 from fastapi import HTTPException
 
+from bot.render import render_ticket
 from src.bot.strings import DMs
 from src.schemas import TicketDetails, TicketUpdate, TicketState
 from src.bot.client import client
@@ -53,11 +54,9 @@ class TicketMessage:
             logger.info("Provided mentor channel is not a text channel")
             raise InvalidChannelType("text channel", str(settings.MENTOR_CHANNEL_ID))
 
-        content = TicketMessages.ticket_available(ticket_details)
-        embed = TicketEmbeds.ticket_available(ticket_details)
-        view = TicketButtons(ticket_details)
+        rendered_message = render_ticket(ticket_details)
+        message = await channel.send(**rendered_message.as_kwargs())
 
-        message = await channel.send(content=content, embed=embed, view=view)
         message_info = {
             "channel_id": str(message.channel.id),
             "message_id": str(message.id),
@@ -82,35 +81,11 @@ class TicketMessage:
             message = await TicketMessage.get_ticket_message(ticket_details)
             message_editor = message.edit
 
-        # TODO: Replace with switch cases
-        state = ticket_details.state()
-        if state == TicketState.RESOLVED:
-            content = TicketMessages.ticket_resolved(ticket_details)
-            embed = TicketEmbeds.ticket_resolved(ticket_details)
+        rendered_message = render_ticket(ticket_details)
+        message_editor(**rendered_message.as_kwargs())
 
-        elif state == TicketState.CLAIMED:
-            content = TicketMessages.ticket_claimed(ticket_details)
-            embed = TicketEmbeds.ticket_claimed(ticket_details)
-
-        elif state == TicketState.AVAILABLE:
-            state = TicketState.AVAILABLE
-            content = TicketMessages.ticket_available(ticket_details)
-            embed = TicketEmbeds.ticket_available(ticket_details)
-
-        #elif state == TicketState.ERROR:
-        else:
-            content = TicketMessages.ticket_available(ticket_details)
-            embed = TicketEmbeds.ticket_available(ticket_details)
-            view = TicketButtons(ticket_details, state)
-            await message_editor(content=content, embed=embed, view=view)
+        if ticket_details.state == TicketState.ERROR:
             raise HTTPException(status_code=422, detail="ticket state inconsistent")
-
-        view = TicketButtons(ticket_details, state)
-        await message_editor(
-            content=content,
-            embed=embed,
-            view=view,
-        )
 
     # TODO: maybe move to a dedicated dm method?
     @staticmethod
