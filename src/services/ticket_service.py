@@ -10,6 +10,7 @@ from src.bot.client import client
 from src.utils.config import settings
 
 from src.exceptions.custom_exceptions import (
+    InternalServerError,
     InvalidChannelType,
     MessageNotFound,
     ChannelNotFound,
@@ -82,7 +83,7 @@ class TicketService:
 
         await message.edit(**render_ticket(ticket).as_kwargs())
 
-        if ticket.state == TicketState.ERROR:
+        if ticket.state() == TicketState.ERROR:
             raise HTTPException(status_code=422, detail="ticket state inconsistent")
 
     # TODO: maybe move to a dedicated dm method?
@@ -115,3 +116,4 @@ class TicketService:
             logger.info("Message already deleted")
         except Exception:
             logger.exception("Failed to delete message on ticket cancel")
+            raise InternalServerError("Failed to delete message on ticket cancel")
