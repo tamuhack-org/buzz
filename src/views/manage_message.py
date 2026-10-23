@@ -2,7 +2,7 @@ import discord
 import logging
 from fastapi import HTTPException
 
-from bot.render import render_ticket
+from src.bot.render import render_ticket
 from src.bot.strings import DMs
 from src.schemas import TicketDetails, TicketUpdate, TicketState
 from src.bot.client import client
@@ -79,7 +79,7 @@ class TicketMessage:
             message_editor = message.edit
 
         rendered_message = render_ticket(ticket_details)
-        message_editor(**rendered_message.as_kwargs())
+        await message_editor(**rendered_message.as_kwargs())
 
         if ticket_details.state == TicketState.ERROR:
             raise HTTPException(status_code=422, detail="ticket state inconsistent")
