@@ -15,7 +15,13 @@ logger = logging.getLogger(__name__)
 @app_commands.command(name="checkout", description="removes mentor role")
 @app_commands.default_permissions(administrator=True)
 async def checkout(interaction: discord.Interaction):
-    await interaction.response.send_message(Checkout.CHECKING_OUT, ephemeral=True)
+    try:
+        await interaction.response.send_message(Checkout.CHECKING_OUT, ephemeral=True)
+    except discord.NotFound:
+        logger.warning(
+            f"checkout from {interaction.user.id} expired before it could be acknowledged"
+        )
+        return
 
     server_id = settings.SERVER_ID
     guild = client.get_guild(server_id)
