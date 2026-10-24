@@ -23,12 +23,15 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     client.tree.add_command(checkout)
     client.add_dynamic_items(TicketActionButton)
+
     # NOTE: use asyncio to spin up new task because client.start runs infinitely
-    # keep reference so its not garbage collected
-    bot_task = asyncio.create_task(client.start(settings.DISCORD_BOT_TOKEN))
-    yield
-    await client.close()
-    await helpr_client.close()
+    app.state.bot_task = asyncio.create_task(client.start(settings.DISCORD_BOT_TOKEN))
+    try:
+        yield
+    finally:
+        app.state.bot_task.cancel()
+        await client.close()
+        await helpr_client.close()
 
 
 app = FastAPI(lifespan=lifespan)
