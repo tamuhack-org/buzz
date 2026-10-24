@@ -28,7 +28,13 @@ class TicketActionButton(
         return cls(TicketAction(match["action"]), match["ticket_id"])
 
     async def callback(self, interaction: discord.Interaction) -> None:
-        await interaction.response.defer(ephemeral=True)
+        try:
+            await interaction.response.defer(ephemeral=True)
+        except discord.NotFound:
+            logger.warning(
+                f"{self.action} on ticket {self.ticket_id} expired before it could be acknowledged"
+            )
+            return
         if interaction.message is None:
             await interaction.followup.send(FollowUps.GENERIC_ERROR, ephemeral=True)
             return
