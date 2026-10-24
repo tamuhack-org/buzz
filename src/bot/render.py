@@ -49,7 +49,6 @@ def _view(ticket: TicketDetails) -> discord.ui.View:
     view = discord.ui.View(timeout=None)
     # TODO: make button colors more easily editable?
     if ticket.state() == TicketState.AVAILABLE:
-        print("CLAIMABLE")
         view.add_item(
             discord.ui.Button(
                 label=Buttons.CLAIM,
