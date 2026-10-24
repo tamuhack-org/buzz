@@ -30,7 +30,6 @@ class RoleService:
                 user = client.get_user(user_id) or await client.fetch_user(user_id)
                 await user.send(DMs.NOT_IN_SERVER)
             except discord.HTTPException:
-                # TODO: redirect to a helpr page with invite link and ask to rerun discord link
                 logger.info("Could not DM user %s; their DMs may be closed", user_id)
 
             raise HTTPException(
