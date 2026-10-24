@@ -19,6 +19,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
+def _log_buzz_exit(task: asyncio.Task) -> None:
+    if not task.cancelled():
+        exc = task.exception()
+        if exc:
+            logger.critical("Discord client stopped unexpectedly", exc_info=exc)
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     client.tree.add_command(checkout)
@@ -26,6 +33,7 @@ async def lifespan(app: FastAPI):
 
     # NOTE: use asyncio to spin up new task because client.start runs infinitely
     app.state.bot_task = asyncio.create_task(client.start(settings.DISCORD_BOT_TOKEN))
+    app.state.bot_task.add_done_callback(_log_buzz_exit)
     try:
         yield
     finally:
