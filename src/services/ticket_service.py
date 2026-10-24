@@ -8,6 +8,7 @@ from src.bot.render import render_ticket
 from src.bot.strings import DMs
 from src.clients import helpr_client
 from src.exceptions.custom_exceptions import (
+    BadRequest,
     ChannelNotFound,
     InternalServerError,
     InvalidChannelType,
@@ -30,22 +31,27 @@ class TicketService:
         await self.refresh_ticket(updated, message)
 
     async def _get_message(self, ticket: TicketUpdate) -> discord.Message:
-        channel_id = int(ticket.channel_id)
-        message_id = int(ticket.message_id)
-        # looks up local cache
-        channel = client.get_channel(channel_id)
-        if channel is None:
-            # http request
-            channel = await client.fetch_channel(channel_id)
+        try:
+            channel_id = int(ticket.channel_id)
+            message_id = int(ticket.message_id)
+        except ValueError:
+            raise BadRequest("provided channel_id or message_id are not numbers")
 
-        if channel is None or not isinstance(channel, discord.TextChannel):
+        try:
+            channel = client.get_channel(channel_id) or await client.fetch_channel(
+                channel_id
+            )
+        except discord.NotFound:
+            raise ChannelNotFound(ticket.channel_id)
+
+        if not isinstance(channel, discord.TextChannel):
             raise InvalidChannelType("text channel", ticket.channel_id)
 
-        message = await channel.fetch_message(message_id)
-        if not message:
+        try:
+            return await channel.fetch_message(message_id)
+        except discord.NotFound:
+            # message was deleted on discord's side but helpr still points at it
             raise MessageNotFound(ticket.message_id, ticket.channel_id)
-
-        return message
 
     async def post_ticket(self, ticket: TicketDetails):
         logger.info("Attemping to ping mentors")
@@ -80,10 +86,13 @@ class TicketService:
         if message is None:
             message = await self._get_message(ticket)
 
-        await message.edit(**render_ticket(ticket).as_kwargs())
+        try:
+            await message.edit(**render_ticket(ticket).as_kwargs())
+            if ticket.state() == TicketState.ERROR:
+                raise HTTPException(status_code=422, detail="ticket state inconsistent")
 
-        if ticket.state() == TicketState.ERROR:
-            raise HTTPException(status_code=422, detail="ticket state inconsistent")
+        except discord.NotFound:
+            raise MessageNotFound(str(message.id), str(message.channel.id))
 
     # TODO: maybe move to a dedicated dm method?
     async def _notify_claimant(self, ticket_details: TicketUpdate):
@@ -94,13 +103,10 @@ class TicketService:
             return
 
         # there was a claimant, let them know ticket was canceled
-        user = client.get_user(int(claimant_id))  # cache only
-        if not user:
-            user = await client.fetch_user(int(claimant_id))  # network request
-        if not user:
-            return
-
         try:
+            user = client.get_user(int(claimant_id))  # cache only
+            if not user:
+                user = await client.fetch_user(int(claimant_id))  # network request
             await user.send(DMs.TICKET_CANCELED.format(mention=user.mention))
         except Exception:
             logger.exception("Failed to notify mentor of ticket cancelation")
@@ -109,10 +115,11 @@ class TicketService:
         try:
             message = await self._get_message(ticket_details)
             await message.delete()
-            await self._notify_claimant(ticket_details)
-
-        except discord.NotFound:
+        except (discord.NotFound, MessageNotFound, ChannelNotFound):
             logger.info("Message already deleted")
         except Exception:
             logger.exception("Failed to delete message on ticket cancel")
             raise InternalServerError("Failed to delete message on ticket cancel")
+
+        # still let the claimant know even if the message was already gone
+        await self._notify_claimant(ticket_details)
