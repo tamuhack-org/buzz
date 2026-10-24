@@ -1,6 +1,7 @@
 import logging
 
 import discord
+from fastapi import HTTPException
 
 from src.bot.client import client
 from src.bot.strings import DMs
@@ -32,7 +33,12 @@ class RoleService:
                 # TODO: redirect to a helpr page with invite link and ask to rerun discord link
                 logger.info("Could not DM user %s; their DMs may be closed", user_id)
 
-            raise BadRequest(f"User {user_id} was not found in server {server_id}")
+            raise HTTPException(
+                status_code=409,
+                detail={
+                    "code": "NOT_IN_SERVER",
+                },
+            )
 
         if role not in member.roles:
             try:
