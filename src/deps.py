@@ -2,10 +2,15 @@ from typing import Annotated
 
 from fastapi import Depends
 
-from src.services.helpr_service import HelprService
+from src.services.role_service import RoleService
+from src.services.ticket_service import TicketService
 
 
-async def get_helpr_service() -> HelprService:
-    return HelprService()
+async def get_ticket_service() -> TicketService:
+    return TicketService()
 
-Helpr = Annotated[HelprService, Depends(get_helpr_service)]
+async def get_role_service() -> RoleService:
+    return RoleService()
+
+TicketServiceDep = Annotated[TicketService, Depends(get_ticket_service)]
+RoleServiceDep = Annotated[RoleService, Depends(get_role_service)]

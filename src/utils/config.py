@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     DISCORD_BOT_TOKEN: str
     MENTOR_CHANNEL_ID: int  # discord.py expects channel ID to be int
     MENTOR_ROLE_ID: int
+    SERVER_ID: int
     HMAC_SECRET: str
     HELPR_URL: str = "http://localhost:3000"
 
