@@ -15,38 +15,53 @@ logger = logging.getLogger(__name__)
 @app_commands.command(name="checkout", description="removes mentor role")
 @app_commands.default_permissions(administrator=True)
 async def checkout(interaction: discord.Interaction):
+    await interaction.response.send_message(Checkout.CHECKING_OUT, ephemeral=True)
+
     server_id = settings.SERVER_ID
     guild = client.get_guild(server_id)
     if guild is None:
         logger.error(
             f"Failed to find server {server_id}. Are you sure buzz is in this server?"
         )
-        await interaction.response.send_message(Checkout.ERROR, ephemeral=True)
+        await interaction.edit_original_response(content=Checkout.ERROR)
         return
 
     try:
         member = await guild.fetch_member(interaction.user.id)
     except discord.NotFound:
-        await interaction.response.send_message(Checkout.NOT_USER, ephemeral=True)
+        await interaction.edit_original_response(content=Checkout.NOT_USER)
         return
 
     role_id = settings.MENTOR_ROLE_ID
     role = guild.get_role(role_id)
     if role is None:
         logger.error(f"Could not find role {role_id} in server {server_id}")
-        await interaction.response.send_message(Checkout.ERROR, ephemeral=True)
+        await interaction.edit_original_response(content=Checkout.ERROR)
         return
 
     if role not in member.roles:
-        await interaction.response.send_message(Checkout.NOT_MENTOR, ephemeral=True)
+        await interaction.edit_original_response(content=Checkout.NOT_MENTOR)
         return
 
     try:
         await member.remove_roles(role)
     except discord.HTTPException:
         logger.exception("Failed to remove mentor role from user %s", member.id)
-        await interaction.response.send_message(Checkout.ERROR, ephemeral=True)
+        await interaction.edit_original_response(content=Checkout.ERROR)
         return
 
-    await interaction.response.send_message(Checkout.SUCCESS, ephemeral=True)
     logger.info(f"Successfully checked out mentor {member.id}")
+
+    try:
+        await member.send(Checkout.SUCCESS)
+    except discord.HTTPException:
+        # DMs closed
+        logger.info("Could not DM checkout confirmation to %s", member.id)
+        #doesn't really matter since they lose access to channel lol
+        await interaction.edit_original_response(content=Checkout.SUCCESS)
+        return
+
+    try:
+        await interaction.delete_original_response()
+    except discord.HTTPException:
+        pass

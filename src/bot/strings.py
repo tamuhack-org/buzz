@@ -71,4 +71,5 @@ class Checkout:
         "We could not find you in the server. Are you sure you're part of the server?"
     )
     ERROR = "Something went wrong.\nPlease contact an organizer to checkout"
-    SUCCESS = "Successfully checked out.\nThanks for mentoring!\nNote: You still need to checkout with an organizer before leaving the venue"
+    CHECKING_OUT = "Checking you out..."
+    SUCCESS = "You will no longer receive ticket notifications.\nThanks for mentoring!\nNote: You still need to checkout with an organizer before leaving the venue"
