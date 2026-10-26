@@ -17,6 +17,7 @@ Discord integration for [helpr](https://github.com/tamuhack-org/helpr), kept in 
 - Give buzz access to the mentor channel
 - Allow mentors to use `/checkout` (Server Settings > Integrations > buzz), it's admin-only by default and restrict to mentor channel if needed
 
+## Bot setup
 Create the required `.env` file (and populate it)
 ```sh
 cp .env.example .env # macOS/Linux
