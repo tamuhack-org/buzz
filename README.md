@@ -1,9 +1,23 @@
 # Buzz
 A discord bot to be used in TAMUhack! 
 
-Currently it just pings mentors in a private channel on the discord server anytime theres a new ticket on [helpr](https://github.com/tamuhack-org/helpr).
+Discord integration for [helpr](https://github.com/tamuhack-org/helpr), kept in sync with helpr's ticket state.
 
-Create the required `.env` file
+- Posts new tickets in the mentor channel and pings the mentor role
+- Mentors can claim, unclaim and resolve tickets from the message buttons
+- Actions made on helpr update the Discord message too (and vice versa)
+- Canceled tickets are deleted and the claimant is DMed
+- Linking Discord on helpr gives the mentor role; `/checkout` command removes it
+
+## Discord setup
+- Create the bot at the [developer portal](https://discord.com/developers/applications) (no privileged intents needed)
+- Invite with scopes `bot` + `applications.commands` and permissions:
+  - Manage Roles
+- Move buzz's role above the mentor role (Server Settings > Roles), or it can't grant/remove it
+- Give buzz access to the mentor channel
+- Allow mentors to use `/checkout` (Server Settings > Integrations > buzz), it's admin-only by default and restrict to mentor channel if needed
+
+Create the required `.env` file (and populate it)
 ```sh
 cp .env.example .env # macOS/Linux
 
